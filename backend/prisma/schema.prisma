@@ -40,9 +40,15 @@ model Client {
 
 model Invoice {
   id        String        @id @default(cuid())
-  userId    String
-  clientId  String
   invoiceNo String        @unique
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)     
+  clientId  String
+  client    Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  items     InvoiceItem[]
+  subtotal      Float
+  tax           Float         @default(0)
+  total         Float
   amount    Decimal       @db.Decimal(12, 2)
   currency  String        @default("INR")
   dueDate   DateTime
@@ -50,8 +56,6 @@ model Invoice {
   notes     String?
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
-  client    Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   payments  Payment[]
 
   @@index([userId])
@@ -59,7 +63,15 @@ model Invoice {
   @@index([status])
   @@map("invoices")
 }
-
+model InvoiceItem{
+  id          String  @id @default(cuid())
+  invoiceId   String
+  invoice     Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  description String
+  quantity    Float
+  unitPrice   Float
+  amount      Float 
+}
 model Payment {
   id        String        @id @default(cuid())
   invoiceId String

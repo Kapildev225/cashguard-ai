@@ -54,6 +54,7 @@ export const ModelName = {
   User: 'User',
   Client: 'Client',
   Invoice: 'Invoice',
+  InvoiceItem: 'InvoiceItem',
   Payment: 'Payment',
   playing_with_neon: 'playing_with_neon'
 } as const
@@ -104,9 +105,12 @@ export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof 
 
 export const InvoiceScalarFieldEnum = {
   id: 'id',
+  invoiceNo: 'invoiceNo',
   userId: 'userId',
   clientId: 'clientId',
-  invoiceNo: 'invoiceNo',
+  subtotal: 'subtotal',
+  tax: 'tax',
+  total: 'total',
   amount: 'amount',
   currency: 'currency',
   dueDate: 'dueDate',
@@ -117,6 +121,18 @@ export const InvoiceScalarFieldEnum = {
 } as const
 
 export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+export const InvoiceItemScalarFieldEnum = {
+  id: 'id',
+  invoiceId: 'invoiceId',
+  description: 'description',
+  quantity: 'quantity',
+  unitPrice: 'unitPrice',
+  amount: 'amount'
+} as const
+
+export type InvoiceItemScalarFieldEnum = (typeof InvoiceItemScalarFieldEnum)[keyof typeof InvoiceItemScalarFieldEnum]
 
 
 export const PaymentScalarFieldEnum = {

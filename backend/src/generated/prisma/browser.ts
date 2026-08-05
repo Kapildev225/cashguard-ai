@@ -33,6 +33,11 @@ export type Client = Prisma.ClientModel
  */
 export type Invoice = Prisma.InvoiceModel
 /**
+ * Model InvoiceItem
+ * 
+ */
+export type InvoiceItem = Prisma.InvoiceItemModel
+/**
  * Model Payment
  * 
  */

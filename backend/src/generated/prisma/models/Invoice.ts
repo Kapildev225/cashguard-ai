@@ -27,18 +27,27 @@ export type AggregateInvoice = {
 }
 
 export type InvoiceAvgAggregateOutputType = {
+  subtotal: number | null
+  tax: number | null
+  total: number | null
   amount: runtime.Decimal | null
 }
 
 export type InvoiceSumAggregateOutputType = {
+  subtotal: number | null
+  tax: number | null
+  total: number | null
   amount: runtime.Decimal | null
 }
 
 export type InvoiceMinAggregateOutputType = {
   id: string | null
+  invoiceNo: string | null
   userId: string | null
   clientId: string | null
-  invoiceNo: string | null
+  subtotal: number | null
+  tax: number | null
+  total: number | null
   amount: runtime.Decimal | null
   currency: string | null
   dueDate: Date | null
@@ -50,9 +59,12 @@ export type InvoiceMinAggregateOutputType = {
 
 export type InvoiceMaxAggregateOutputType = {
   id: string | null
+  invoiceNo: string | null
   userId: string | null
   clientId: string | null
-  invoiceNo: string | null
+  subtotal: number | null
+  tax: number | null
+  total: number | null
   amount: runtime.Decimal | null
   currency: string | null
   dueDate: Date | null
@@ -64,9 +76,12 @@ export type InvoiceMaxAggregateOutputType = {
 
 export type InvoiceCountAggregateOutputType = {
   id: number
+  invoiceNo: number
   userId: number
   clientId: number
-  invoiceNo: number
+  subtotal: number
+  tax: number
+  total: number
   amount: number
   currency: number
   dueDate: number
@@ -79,18 +94,27 @@ export type InvoiceCountAggregateOutputType = {
 
 
 export type InvoiceAvgAggregateInputType = {
+  subtotal?: true
+  tax?: true
+  total?: true
   amount?: true
 }
 
 export type InvoiceSumAggregateInputType = {
+  subtotal?: true
+  tax?: true
+  total?: true
   amount?: true
 }
 
 export type InvoiceMinAggregateInputType = {
   id?: true
+  invoiceNo?: true
   userId?: true
   clientId?: true
-  invoiceNo?: true
+  subtotal?: true
+  tax?: true
+  total?: true
   amount?: true
   currency?: true
   dueDate?: true
@@ -102,9 +126,12 @@ export type InvoiceMinAggregateInputType = {
 
 export type InvoiceMaxAggregateInputType = {
   id?: true
+  invoiceNo?: true
   userId?: true
   clientId?: true
-  invoiceNo?: true
+  subtotal?: true
+  tax?: true
+  total?: true
   amount?: true
   currency?: true
   dueDate?: true
@@ -116,9 +143,12 @@ export type InvoiceMaxAggregateInputType = {
 
 export type InvoiceCountAggregateInputType = {
   id?: true
+  invoiceNo?: true
   userId?: true
   clientId?: true
-  invoiceNo?: true
+  subtotal?: true
+  tax?: true
+  total?: true
   amount?: true
   currency?: true
   dueDate?: true
@@ -217,9 +247,12 @@ export type InvoiceGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type InvoiceGroupByOutputType = {
   id: string
+  invoiceNo: string
   userId: string
   clientId: string
-  invoiceNo: string
+  subtotal: number
+  tax: number
+  total: number
   amount: runtime.Decimal
   currency: string
   dueDate: Date
@@ -254,9 +287,12 @@ export type InvoiceWhereInput = {
   OR?: Prisma.InvoiceWhereInput[]
   NOT?: Prisma.InvoiceWhereInput | Prisma.InvoiceWhereInput[]
   id?: Prisma.StringFilter<"Invoice"> | string
+  invoiceNo?: Prisma.StringFilter<"Invoice"> | string
   userId?: Prisma.StringFilter<"Invoice"> | string
   clientId?: Prisma.StringFilter<"Invoice"> | string
-  invoiceNo?: Prisma.StringFilter<"Invoice"> | string
+  subtotal?: Prisma.FloatFilter<"Invoice"> | number
+  tax?: Prisma.FloatFilter<"Invoice"> | number
+  total?: Prisma.FloatFilter<"Invoice"> | number
   amount?: Prisma.DecimalFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFilter<"Invoice"> | string
   dueDate?: Prisma.DateTimeFilter<"Invoice"> | Date | string
@@ -264,16 +300,20 @@ export type InvoiceWhereInput = {
   notes?: Prisma.StringNullableFilter<"Invoice"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Invoice"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Invoice"> | Date | string
-  client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.ClientWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.ClientWhereInput>
+  items?: Prisma.InvoiceItemListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
 }
 
 export type InvoiceOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  invoiceNo?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   clientId?: Prisma.SortOrder
-  invoiceNo?: Prisma.SortOrder
+  subtotal?: Prisma.SortOrder
+  tax?: Prisma.SortOrder
+  total?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
@@ -281,8 +321,9 @@ export type InvoiceOrderByWithRelationInput = {
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  client?: Prisma.ClientOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
+  client?: Prisma.ClientOrderByWithRelationInput
+  items?: Prisma.InvoiceItemOrderByRelationAggregateInput
   payments?: Prisma.PaymentOrderByRelationAggregateInput
 }
 
@@ -294,6 +335,9 @@ export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.InvoiceWhereInput | Prisma.InvoiceWhereInput[]
   userId?: Prisma.StringFilter<"Invoice"> | string
   clientId?: Prisma.StringFilter<"Invoice"> | string
+  subtotal?: Prisma.FloatFilter<"Invoice"> | number
+  tax?: Prisma.FloatFilter<"Invoice"> | number
+  total?: Prisma.FloatFilter<"Invoice"> | number
   amount?: Prisma.DecimalFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFilter<"Invoice"> | string
   dueDate?: Prisma.DateTimeFilter<"Invoice"> | Date | string
@@ -301,16 +345,20 @@ export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
   notes?: Prisma.StringNullableFilter<"Invoice"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Invoice"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Invoice"> | Date | string
-  client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.ClientWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.ClientWhereInput>
+  items?: Prisma.InvoiceItemListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
 }, "id" | "invoiceNo">
 
 export type InvoiceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  invoiceNo?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   clientId?: Prisma.SortOrder
-  invoiceNo?: Prisma.SortOrder
+  subtotal?: Prisma.SortOrder
+  tax?: Prisma.SortOrder
+  total?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
@@ -330,9 +378,12 @@ export type InvoiceScalarWhereWithAggregatesInput = {
   OR?: Prisma.InvoiceScalarWhereWithAggregatesInput[]
   NOT?: Prisma.InvoiceScalarWhereWithAggregatesInput | Prisma.InvoiceScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
+  invoiceNo?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
   userId?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
   clientId?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
-  invoiceNo?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
+  subtotal?: Prisma.FloatWithAggregatesFilter<"Invoice"> | number
+  tax?: Prisma.FloatWithAggregatesFilter<"Invoice"> | number
+  total?: Prisma.FloatWithAggregatesFilter<"Invoice"> | number
   amount?: Prisma.DecimalWithAggregatesFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringWithAggregatesFilter<"Invoice"> | string
   dueDate?: Prisma.DateTimeWithAggregatesFilter<"Invoice"> | Date | string
@@ -345,6 +396,9 @@ export type InvoiceScalarWhereWithAggregatesInput = {
 export type InvoiceCreateInput = {
   id?: string
   invoiceNo: string
+  subtotal: number
+  tax?: number
+  total: number
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   dueDate: Date | string
@@ -352,16 +406,20 @@ export type InvoiceCreateInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  client: Prisma.ClientCreateNestedOneWithoutInvoicesInput
   user: Prisma.UserCreateNestedOneWithoutInvoicesInput
+  client: Prisma.ClientCreateNestedOneWithoutInvoicesInput
+  items?: Prisma.InvoiceItemCreateNestedManyWithoutInvoiceInput
   payments?: Prisma.PaymentCreateNestedManyWithoutInvoiceInput
 }
 
 export type InvoiceUncheckedCreateInput = {
   id?: string
+  invoiceNo: string
   userId: string
   clientId: string
-  invoiceNo: string
+  subtotal: number
+  tax?: number
+  total: number
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   dueDate: Date | string
@@ -369,12 +427,16 @@ export type InvoiceUncheckedCreateInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  items?: Prisma.InvoiceItemUncheckedCreateNestedManyWithoutInvoiceInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutInvoiceInput
 }
 
 export type InvoiceUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
+  subtotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  tax?: Prisma.FloatFieldUpdateOperationsInput | number
+  total?: Prisma.FloatFieldUpdateOperationsInput | number
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -382,16 +444,20 @@ export type InvoiceUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  client?: Prisma.ClientUpdateOneRequiredWithoutInvoicesNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutInvoicesNestedInput
+  client?: Prisma.ClientUpdateOneRequiredWithoutInvoicesNestedInput
+  items?: Prisma.InvoiceItemUpdateManyWithoutInvoiceNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutInvoiceNestedInput
 }
 
 export type InvoiceUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
-  invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
+  subtotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  tax?: Prisma.FloatFieldUpdateOperationsInput | number
+  total?: Prisma.FloatFieldUpdateOperationsInput | number
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -399,14 +465,18 @@ export type InvoiceUncheckedUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  items?: Prisma.InvoiceItemUncheckedUpdateManyWithoutInvoiceNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutInvoiceNestedInput
 }
 
 export type InvoiceCreateManyInput = {
   id?: string
+  invoiceNo: string
   userId: string
   clientId: string
-  invoiceNo: string
+  subtotal: number
+  tax?: number
+  total: number
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   dueDate: Date | string
@@ -419,6 +489,9 @@ export type InvoiceCreateManyInput = {
 export type InvoiceUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
+  subtotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  tax?: Prisma.FloatFieldUpdateOperationsInput | number
+  total?: Prisma.FloatFieldUpdateOperationsInput | number
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -430,9 +503,12 @@ export type InvoiceUpdateManyMutationInput = {
 
 export type InvoiceUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
-  invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
+  subtotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  tax?: Prisma.FloatFieldUpdateOperationsInput | number
+  total?: Prisma.FloatFieldUpdateOperationsInput | number
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -454,9 +530,12 @@ export type InvoiceOrderByRelationAggregateInput = {
 
 export type InvoiceCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  invoiceNo?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   clientId?: Prisma.SortOrder
-  invoiceNo?: Prisma.SortOrder
+  subtotal?: Prisma.SortOrder
+  tax?: Prisma.SortOrder
+  total?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
@@ -467,14 +546,20 @@ export type InvoiceCountOrderByAggregateInput = {
 }
 
 export type InvoiceAvgOrderByAggregateInput = {
+  subtotal?: Prisma.SortOrder
+  tax?: Prisma.SortOrder
+  total?: Prisma.SortOrder
   amount?: Prisma.SortOrder
 }
 
 export type InvoiceMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  invoiceNo?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   clientId?: Prisma.SortOrder
-  invoiceNo?: Prisma.SortOrder
+  subtotal?: Prisma.SortOrder
+  tax?: Prisma.SortOrder
+  total?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
@@ -486,9 +571,12 @@ export type InvoiceMaxOrderByAggregateInput = {
 
 export type InvoiceMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  invoiceNo?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   clientId?: Prisma.SortOrder
-  invoiceNo?: Prisma.SortOrder
+  subtotal?: Prisma.SortOrder
+  tax?: Prisma.SortOrder
+  total?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   currency?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
@@ -499,6 +587,9 @@ export type InvoiceMinOrderByAggregateInput = {
 }
 
 export type InvoiceSumOrderByAggregateInput = {
+  subtotal?: Prisma.SortOrder
+  tax?: Prisma.SortOrder
+  total?: Prisma.SortOrder
   amount?: Prisma.SortOrder
 }
 
@@ -591,6 +682,14 @@ export type InvoiceUncheckedUpdateManyWithoutClientNestedInput = {
   deleteMany?: Prisma.InvoiceScalarWhereInput | Prisma.InvoiceScalarWhereInput[]
 }
 
+export type FloatFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type DecimalFieldUpdateOperationsInput = {
   set?: runtime.Decimal | runtime.DecimalJsLike | number | string
   increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -601,6 +700,20 @@ export type DecimalFieldUpdateOperationsInput = {
 
 export type EnumInvoiceStatusFieldUpdateOperationsInput = {
   set?: $Enums.InvoiceStatus
+}
+
+export type InvoiceCreateNestedOneWithoutItemsInput = {
+  create?: Prisma.XOR<Prisma.InvoiceCreateWithoutItemsInput, Prisma.InvoiceUncheckedCreateWithoutItemsInput>
+  connectOrCreate?: Prisma.InvoiceCreateOrConnectWithoutItemsInput
+  connect?: Prisma.InvoiceWhereUniqueInput
+}
+
+export type InvoiceUpdateOneRequiredWithoutItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.InvoiceCreateWithoutItemsInput, Prisma.InvoiceUncheckedCreateWithoutItemsInput>
+  connectOrCreate?: Prisma.InvoiceCreateOrConnectWithoutItemsInput
+  upsert?: Prisma.InvoiceUpsertWithoutItemsInput
+  connect?: Prisma.InvoiceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InvoiceUpdateToOneWithWhereWithoutItemsInput, Prisma.InvoiceUpdateWithoutItemsInput>, Prisma.InvoiceUncheckedUpdateWithoutItemsInput>
 }
 
 export type InvoiceCreateNestedOneWithoutPaymentsInput = {
@@ -620,6 +733,9 @@ export type InvoiceUpdateOneRequiredWithoutPaymentsNestedInput = {
 export type InvoiceCreateWithoutUserInput = {
   id?: string
   invoiceNo: string
+  subtotal: number
+  tax?: number
+  total: number
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   dueDate: Date | string
@@ -628,13 +744,17 @@ export type InvoiceCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   client: Prisma.ClientCreateNestedOneWithoutInvoicesInput
+  items?: Prisma.InvoiceItemCreateNestedManyWithoutInvoiceInput
   payments?: Prisma.PaymentCreateNestedManyWithoutInvoiceInput
 }
 
 export type InvoiceUncheckedCreateWithoutUserInput = {
   id?: string
-  clientId: string
   invoiceNo: string
+  clientId: string
+  subtotal: number
+  tax?: number
+  total: number
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   dueDate: Date | string
@@ -642,6 +762,7 @@ export type InvoiceUncheckedCreateWithoutUserInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  items?: Prisma.InvoiceItemUncheckedCreateNestedManyWithoutInvoiceInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutInvoiceInput
 }
 
@@ -676,9 +797,12 @@ export type InvoiceScalarWhereInput = {
   OR?: Prisma.InvoiceScalarWhereInput[]
   NOT?: Prisma.InvoiceScalarWhereInput | Prisma.InvoiceScalarWhereInput[]
   id?: Prisma.StringFilter<"Invoice"> | string
+  invoiceNo?: Prisma.StringFilter<"Invoice"> | string
   userId?: Prisma.StringFilter<"Invoice"> | string
   clientId?: Prisma.StringFilter<"Invoice"> | string
-  invoiceNo?: Prisma.StringFilter<"Invoice"> | string
+  subtotal?: Prisma.FloatFilter<"Invoice"> | number
+  tax?: Prisma.FloatFilter<"Invoice"> | number
+  total?: Prisma.FloatFilter<"Invoice"> | number
   amount?: Prisma.DecimalFilter<"Invoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFilter<"Invoice"> | string
   dueDate?: Prisma.DateTimeFilter<"Invoice"> | Date | string
@@ -691,6 +815,9 @@ export type InvoiceScalarWhereInput = {
 export type InvoiceCreateWithoutClientInput = {
   id?: string
   invoiceNo: string
+  subtotal: number
+  tax?: number
+  total: number
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   dueDate: Date | string
@@ -699,13 +826,17 @@ export type InvoiceCreateWithoutClientInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutInvoicesInput
+  items?: Prisma.InvoiceItemCreateNestedManyWithoutInvoiceInput
   payments?: Prisma.PaymentCreateNestedManyWithoutInvoiceInput
 }
 
 export type InvoiceUncheckedCreateWithoutClientInput = {
   id?: string
-  userId: string
   invoiceNo: string
+  userId: string
+  subtotal: number
+  tax?: number
+  total: number
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   dueDate: Date | string
@@ -713,6 +844,7 @@ export type InvoiceUncheckedCreateWithoutClientInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  items?: Prisma.InvoiceItemUncheckedCreateNestedManyWithoutInvoiceInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutInvoiceInput
 }
 
@@ -742,9 +874,12 @@ export type InvoiceUpdateManyWithWhereWithoutClientInput = {
   data: Prisma.XOR<Prisma.InvoiceUpdateManyMutationInput, Prisma.InvoiceUncheckedUpdateManyWithoutClientInput>
 }
 
-export type InvoiceCreateWithoutPaymentsInput = {
+export type InvoiceCreateWithoutItemsInput = {
   id?: string
   invoiceNo: string
+  subtotal: number
+  tax?: number
+  total: number
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   dueDate: Date | string
@@ -752,15 +887,107 @@ export type InvoiceCreateWithoutPaymentsInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  client: Prisma.ClientCreateNestedOneWithoutInvoicesInput
   user: Prisma.UserCreateNestedOneWithoutInvoicesInput
+  client: Prisma.ClientCreateNestedOneWithoutInvoicesInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutInvoiceInput
+}
+
+export type InvoiceUncheckedCreateWithoutItemsInput = {
+  id?: string
+  invoiceNo: string
+  userId: string
+  clientId: string
+  subtotal: number
+  tax?: number
+  total: number
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  dueDate: Date | string
+  status?: $Enums.InvoiceStatus
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutInvoiceInput
+}
+
+export type InvoiceCreateOrConnectWithoutItemsInput = {
+  where: Prisma.InvoiceWhereUniqueInput
+  create: Prisma.XOR<Prisma.InvoiceCreateWithoutItemsInput, Prisma.InvoiceUncheckedCreateWithoutItemsInput>
+}
+
+export type InvoiceUpsertWithoutItemsInput = {
+  update: Prisma.XOR<Prisma.InvoiceUpdateWithoutItemsInput, Prisma.InvoiceUncheckedUpdateWithoutItemsInput>
+  create: Prisma.XOR<Prisma.InvoiceCreateWithoutItemsInput, Prisma.InvoiceUncheckedCreateWithoutItemsInput>
+  where?: Prisma.InvoiceWhereInput
+}
+
+export type InvoiceUpdateToOneWithWhereWithoutItemsInput = {
+  where?: Prisma.InvoiceWhereInput
+  data: Prisma.XOR<Prisma.InvoiceUpdateWithoutItemsInput, Prisma.InvoiceUncheckedUpdateWithoutItemsInput>
+}
+
+export type InvoiceUpdateWithoutItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
+  subtotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  tax?: Prisma.FloatFieldUpdateOperationsInput | number
+  total?: Prisma.FloatFieldUpdateOperationsInput | number
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutInvoicesNestedInput
+  client?: Prisma.ClientUpdateOneRequiredWithoutInvoicesNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutInvoiceNestedInput
+}
+
+export type InvoiceUncheckedUpdateWithoutItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.StringFieldUpdateOperationsInput | string
+  subtotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  tax?: Prisma.FloatFieldUpdateOperationsInput | number
+  total?: Prisma.FloatFieldUpdateOperationsInput | number
+  amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumInvoiceStatusFieldUpdateOperationsInput | $Enums.InvoiceStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutInvoiceNestedInput
+}
+
+export type InvoiceCreateWithoutPaymentsInput = {
+  id?: string
+  invoiceNo: string
+  subtotal: number
+  tax?: number
+  total: number
+  amount: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  dueDate: Date | string
+  status?: $Enums.InvoiceStatus
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutInvoicesInput
+  client: Prisma.ClientCreateNestedOneWithoutInvoicesInput
+  items?: Prisma.InvoiceItemCreateNestedManyWithoutInvoiceInput
 }
 
 export type InvoiceUncheckedCreateWithoutPaymentsInput = {
   id?: string
+  invoiceNo: string
   userId: string
   clientId: string
-  invoiceNo: string
+  subtotal: number
+  tax?: number
+  total: number
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   dueDate: Date | string
@@ -768,6 +995,7 @@ export type InvoiceUncheckedCreateWithoutPaymentsInput = {
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  items?: Prisma.InvoiceItemUncheckedCreateNestedManyWithoutInvoiceInput
 }
 
 export type InvoiceCreateOrConnectWithoutPaymentsInput = {
@@ -789,6 +1017,9 @@ export type InvoiceUpdateToOneWithWhereWithoutPaymentsInput = {
 export type InvoiceUpdateWithoutPaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
+  subtotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  tax?: Prisma.FloatFieldUpdateOperationsInput | number
+  total?: Prisma.FloatFieldUpdateOperationsInput | number
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -796,15 +1027,19 @@ export type InvoiceUpdateWithoutPaymentsInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  client?: Prisma.ClientUpdateOneRequiredWithoutInvoicesNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutInvoicesNestedInput
+  client?: Prisma.ClientUpdateOneRequiredWithoutInvoicesNestedInput
+  items?: Prisma.InvoiceItemUpdateManyWithoutInvoiceNestedInput
 }
 
 export type InvoiceUncheckedUpdateWithoutPaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   clientId?: Prisma.StringFieldUpdateOperationsInput | string
-  invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
+  subtotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  tax?: Prisma.FloatFieldUpdateOperationsInput | number
+  total?: Prisma.FloatFieldUpdateOperationsInput | number
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -812,12 +1047,16 @@ export type InvoiceUncheckedUpdateWithoutPaymentsInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  items?: Prisma.InvoiceItemUncheckedUpdateManyWithoutInvoiceNestedInput
 }
 
 export type InvoiceCreateManyUserInput = {
   id?: string
-  clientId: string
   invoiceNo: string
+  clientId: string
+  subtotal: number
+  tax?: number
+  total: number
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   dueDate: Date | string
@@ -830,6 +1069,9 @@ export type InvoiceCreateManyUserInput = {
 export type InvoiceUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
+  subtotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  tax?: Prisma.FloatFieldUpdateOperationsInput | number
+  total?: Prisma.FloatFieldUpdateOperationsInput | number
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -838,13 +1080,17 @@ export type InvoiceUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   client?: Prisma.ClientUpdateOneRequiredWithoutInvoicesNestedInput
+  items?: Prisma.InvoiceItemUpdateManyWithoutInvoiceNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutInvoiceNestedInput
 }
 
 export type InvoiceUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clientId?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.StringFieldUpdateOperationsInput | string
+  subtotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  tax?: Prisma.FloatFieldUpdateOperationsInput | number
+  total?: Prisma.FloatFieldUpdateOperationsInput | number
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -852,13 +1098,17 @@ export type InvoiceUncheckedUpdateWithoutUserInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  items?: Prisma.InvoiceItemUncheckedUpdateManyWithoutInvoiceNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutInvoiceNestedInput
 }
 
 export type InvoiceUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  clientId?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
+  clientId?: Prisma.StringFieldUpdateOperationsInput | string
+  subtotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  tax?: Prisma.FloatFieldUpdateOperationsInput | number
+  total?: Prisma.FloatFieldUpdateOperationsInput | number
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -870,8 +1120,11 @@ export type InvoiceUncheckedUpdateManyWithoutUserInput = {
 
 export type InvoiceCreateManyClientInput = {
   id?: string
-  userId: string
   invoiceNo: string
+  userId: string
+  subtotal: number
+  tax?: number
+  total: number
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: string
   dueDate: Date | string
@@ -884,6 +1137,9 @@ export type InvoiceCreateManyClientInput = {
 export type InvoiceUpdateWithoutClientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
+  subtotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  tax?: Prisma.FloatFieldUpdateOperationsInput | number
+  total?: Prisma.FloatFieldUpdateOperationsInput | number
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -892,13 +1148,17 @@ export type InvoiceUpdateWithoutClientInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutInvoicesNestedInput
+  items?: Prisma.InvoiceItemUpdateManyWithoutInvoiceNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutInvoiceNestedInput
 }
 
 export type InvoiceUncheckedUpdateWithoutClientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  subtotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  tax?: Prisma.FloatFieldUpdateOperationsInput | number
+  total?: Prisma.FloatFieldUpdateOperationsInput | number
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -906,13 +1166,17 @@ export type InvoiceUncheckedUpdateWithoutClientInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  items?: Prisma.InvoiceItemUncheckedUpdateManyWithoutInvoiceNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutInvoiceNestedInput
 }
 
 export type InvoiceUncheckedUpdateManyWithoutClientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNo?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  subtotal?: Prisma.FloatFieldUpdateOperationsInput | number
+  tax?: Prisma.FloatFieldUpdateOperationsInput | number
+  total?: Prisma.FloatFieldUpdateOperationsInput | number
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   dueDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -928,10 +1192,12 @@ export type InvoiceUncheckedUpdateManyWithoutClientInput = {
  */
 
 export type InvoiceCountOutputType = {
+  items: number
   payments: number
 }
 
 export type InvoiceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  items?: boolean | InvoiceCountOutputTypeCountItemsArgs
   payments?: boolean | InvoiceCountOutputTypeCountPaymentsArgs
 }
 
@@ -948,6 +1214,13 @@ export type InvoiceCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exte
 /**
  * InvoiceCountOutputType without action
  */
+export type InvoiceCountOutputTypeCountItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvoiceItemWhereInput
+}
+
+/**
+ * InvoiceCountOutputType without action
+ */
 export type InvoiceCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PaymentWhereInput
 }
@@ -955,9 +1228,12 @@ export type InvoiceCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Type
 
 export type InvoiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  invoiceNo?: boolean
   userId?: boolean
   clientId?: boolean
-  invoiceNo?: boolean
+  subtotal?: boolean
+  tax?: boolean
+  total?: boolean
   amount?: boolean
   currency?: boolean
   dueDate?: boolean
@@ -965,17 +1241,21 @@ export type InvoiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
+  items?: boolean | Prisma.Invoice$itemsArgs<ExtArgs>
   payments?: boolean | Prisma.Invoice$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.InvoiceCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["invoice"]>
 
 export type InvoiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  invoiceNo?: boolean
   userId?: boolean
   clientId?: boolean
-  invoiceNo?: boolean
+  subtotal?: boolean
+  tax?: boolean
+  total?: boolean
   amount?: boolean
   currency?: boolean
   dueDate?: boolean
@@ -983,15 +1263,18 @@ export type InvoiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["invoice"]>
 
 export type InvoiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  invoiceNo?: boolean
   userId?: boolean
   clientId?: boolean
-  invoiceNo?: boolean
+  subtotal?: boolean
+  tax?: boolean
+  total?: boolean
   amount?: boolean
   currency?: boolean
   dueDate?: boolean
@@ -999,15 +1282,18 @@ export type InvoiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["invoice"]>
 
 export type InvoiceSelectScalar = {
   id?: boolean
+  invoiceNo?: boolean
   userId?: boolean
   clientId?: boolean
-  invoiceNo?: boolean
+  subtotal?: boolean
+  tax?: boolean
+  total?: boolean
   amount?: boolean
   currency?: boolean
   dueDate?: boolean
@@ -1017,34 +1303,39 @@ export type InvoiceSelectScalar = {
   updatedAt?: boolean
 }
 
-export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "clientId" | "invoiceNo" | "amount" | "currency" | "dueDate" | "status" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["invoice"]>
+export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "invoiceNo" | "userId" | "clientId" | "subtotal" | "tax" | "total" | "amount" | "currency" | "dueDate" | "status" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["invoice"]>
 export type InvoiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
+  items?: boolean | Prisma.Invoice$itemsArgs<ExtArgs>
   payments?: boolean | Prisma.Invoice$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.InvoiceCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type InvoiceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
 }
 export type InvoiceIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
 }
 
 export type $InvoicePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Invoice"
   objects: {
-    client: Prisma.$ClientPayload<ExtArgs>
     user: Prisma.$UserPayload<ExtArgs>
+    client: Prisma.$ClientPayload<ExtArgs>
+    items: Prisma.$InvoiceItemPayload<ExtArgs>[]
     payments: Prisma.$PaymentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    invoiceNo: string
     userId: string
     clientId: string
-    invoiceNo: string
+    subtotal: number
+    tax: number
+    total: number
     amount: runtime.Decimal
     currency: string
     dueDate: Date
@@ -1446,8 +1737,9 @@ readonly fields: InvoiceFieldRefs;
  */
 export interface Prisma__InvoiceClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  client<T extends Prisma.ClientDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ClientDefaultArgs<ExtArgs>>): Prisma.Prisma__ClientClient<runtime.Types.Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  client<T extends Prisma.ClientDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ClientDefaultArgs<ExtArgs>>): Prisma.Prisma__ClientClient<runtime.Types.Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  items<T extends Prisma.Invoice$itemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Invoice$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoiceItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   payments<T extends Prisma.Invoice$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Invoice$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1479,9 +1771,12 @@ export interface Prisma__InvoiceClient<T, Null = never, ExtArgs extends runtime.
  */
 export interface InvoiceFieldRefs {
   readonly id: Prisma.FieldRef<"Invoice", 'String'>
+  readonly invoiceNo: Prisma.FieldRef<"Invoice", 'String'>
   readonly userId: Prisma.FieldRef<"Invoice", 'String'>
   readonly clientId: Prisma.FieldRef<"Invoice", 'String'>
-  readonly invoiceNo: Prisma.FieldRef<"Invoice", 'String'>
+  readonly subtotal: Prisma.FieldRef<"Invoice", 'Float'>
+  readonly tax: Prisma.FieldRef<"Invoice", 'Float'>
+  readonly total: Prisma.FieldRef<"Invoice", 'Float'>
   readonly amount: Prisma.FieldRef<"Invoice", 'Decimal'>
   readonly currency: Prisma.FieldRef<"Invoice", 'String'>
   readonly dueDate: Prisma.FieldRef<"Invoice", 'DateTime'>
@@ -1887,6 +2182,30 @@ export type InvoiceDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Invoices to delete.
    */
   limit?: number
+}
+
+/**
+ * Invoice.items
+ */
+export type Invoice$itemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InvoiceItem
+   */
+  select?: Prisma.InvoiceItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InvoiceItem
+   */
+  omit?: Prisma.InvoiceItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvoiceItemInclude<ExtArgs> | null
+  where?: Prisma.InvoiceItemWhereInput
+  orderBy?: Prisma.InvoiceItemOrderByWithRelationInput | Prisma.InvoiceItemOrderByWithRelationInput[]
+  cursor?: Prisma.InvoiceItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InvoiceItemScalarFieldEnum | Prisma.InvoiceItemScalarFieldEnum[]
 }
 
 /**

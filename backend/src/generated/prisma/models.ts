@@ -11,6 +11,7 @@
 export type * from './models/User'
 export type * from './models/Client'
 export type * from './models/Invoice'
+export type * from './models/InvoiceItem'
 export type * from './models/Payment'
 export type * from './models/playing_with_neon'
 export type * from './commonInputTypes'
