@@ -1,0 +1,12 @@
+{
+  "name": "cashguard-ai",
+  "private": true,
+  "scripts": {
+    "backend": "npm.cmd --prefix backend run dev",
+    "frontend": "npm.cmd --prefix frontend run dev",
+    "build": "npm.cmd --prefix backend run build && npm.cmd --prefix frontend run build",
+    "db:migrate": "npm.cmd --prefix backend run db:migrate",
+    "db:seed": "npm.cmd --prefix backend run db:seed",
+    "db:studio": "npm.cmd --prefix backend run db:studio"
+  }
+}

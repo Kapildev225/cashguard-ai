@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  // Use the JS client provider so Prisma will generate runtime files into node_modules/.prisma
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+
+}
+
+
+enum Role {
+  OWNER
+  ADMIN
+  STAFF
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PAID
+  OVERDUE
+}
+
+model User {
+  id            String         @id @default(uuid())
+  name          String
+  email         String         @unique
+  passwordHash  String
+  role          Role           @default(OWNER)
+  createdAt     DateTime       @default(now())
+  clients       Client[]
+  notifications Notification[]
+}
+
+model Client {
+  id        String    @id @default(uuid())
+  name      String
+  email     String
+  phone     String?
+  company   String?
+  notes     String?
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  invoices  Invoice[]
+  createdAt DateTime  @default(now())
+}
+
+model Invoice {
+  id        String        @id @default(uuid())
+  clientId  String
+  client    Client        @relation(fields: [clientId], references: [id])
+  status    InvoiceStatus @default(DRAFT)
+  dueDate   DateTime
+  total     Decimal       @default(0)
+  items     InvoiceItem[]
+  payments  Payment[]
+  reminders Reminder[]
+  createdAt DateTime      @default(now())
+}
+
+model InvoiceItem {
+  id          String  @id @default(uuid())
+  invoiceId   String
+  invoice     Invoice @relation(fields: [invoiceId], references: [id])
+  description String
+  quantity    Int     @default(1)
+  unitPrice   Decimal
+}
+
+model Payment {
+  id        String   @id @default(uuid())
+  invoiceId String
+  invoice   Invoice  @relation(fields: [invoiceId], references: [id])
+  amount    Decimal
+  paidAt    DateTime @default(now())
+}
+
+model Reminder {
+  id        String   @id @default(uuid())
+  invoiceId String
+  invoice   Invoice  @relation(fields: [invoiceId], references: [id])
+  sendAt    DateTime
+  sent      Boolean  @default(false)
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
