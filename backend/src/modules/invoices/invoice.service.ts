@@ -4,27 +4,63 @@ import {createInvoiceInput, updateInvoiceInput} from "./invoice.validation";
 import {generateInvoiceNumber} from "./invoice.utils";
 import type {Invoice} from "../../generated/prisma/client";
 import* as clientService from "../clients/client.service";
+import { generateInvoicePdf } from "./invoice.pdf";
+import { sendInvoiceEmail } from "./invoice.email";
 
 const calculateTotalAmount = (items: { description: string; quantity: number; unitPrice: number }[] = []): number => {
     return items.reduce((total, item) => total + item.quantity * item.unitPrice, 0);
 }
-export const createInvoice = async (data: createInvoiceInput & { userId?: string }): Promise<Invoice> => {
+// export const createInvoice = async (data: createInvoiceInput & { userId?: string }): Promise<Invoice> => {
     // ensure client exists
-    const client = await clientService.ClientService.getClientById(data.clientId);
+    // const client = await clientService.ClientService.getClientById(data.clientId);
+    // if (!client) {
+        // throw new AppError(404, "Client not found");
+    // }
+// 
+    // const subtotal = calculateTotalAmount((data as any).items);
+    // const tax = data.tax ?? 0;
+    // const total = subtotal + tax;
+// 
+    // support callers that pass either userId (preferred) or legacy userInfo.userId
+    // const forUserId = data.userId ?? (data as any).userInfo?.userId;
+    // const invoiceNumber = await generateInvoiceNumber(forUserId);
+// 
+export const createInvoice = async (
+    data: createInvoiceInput & { userId?: string }
+): Promise<Invoice> => {
+
+    // Get the authenticated user's ID
+    const forUserId =
+        data.userId ?? (data as any).userInfo?.userId;
+
+    if (!forUserId) {
+        throw new AppError(401, "Unauthorized");
+    }
+
+    // Ensure the client exists AND belongs to this user
+    const client =
+        await clientService.ClientService.getClientById(
+            data.clientId,
+            forUserId
+        );
+
     if (!client) {
         throw new AppError(404, "Client not found");
     }
 
-    const subtotal = calculateTotalAmount((data as any).items);
+    const subtotal = calculateTotalAmount(
+        (data as any).items
+    );
+
     const tax = data.tax ?? 0;
     const total = subtotal + tax;
 
-    const invoiceNumber = await generateInvoiceNumber(data.userInfo.userId);
-
+    const invoiceNumber =
+        await generateInvoiceNumber(forUserId);
    return prisma.invoice.create({
         data: {
             invoiceNo: invoiceNumber,
-            userId: data.userId ?? data.userInfo.userId,
+            userId: forUserId,
             clientId: data.clientId,
             subtotal,
             tax,
@@ -59,8 +95,9 @@ export const getInvoicesByUser = async (userId: string, opts: { page?: number; l
     const search = opts.search?.trim();
     const where: any = { userId };
     if (search) {
+        // prisma schema stores the invoice identifier in `invoiceNo`
         where.OR = [
-            { invoiceNumber: { contains: search, mode: 'insensitive' as const } },
+            { invoiceNo: { contains: search, mode: 'insensitive' as const } },
             { notes: { contains: search, mode: 'insensitive' as const } },
         ];
     }
@@ -117,6 +154,39 @@ export const deleteInvoice = async (userId: string, id: string): Promise<Invoice
     return prisma.invoice.delete({ where: { id } });
 };
 
+export const sendInvoice = async (userId: string, invoiceId: string) => {
+  // get invoice (ensure relations are available)
+  let invoice = await getInvoiceById(invoiceId) as any;
+  if (!invoice) throw new AppError(404, "Invoice not found");
+
+  // Ensure the invoice belongs to the requesting user
+  if (invoice.userId !== userId) throw new AppError(403, "Forbidden");
+
+  // If client relation is not present, load it
+  if (!invoice.client) {
+    invoice.client = await prisma.client.findUnique({ where: { id: invoice.clientId } });
+    if (!invoice.client) throw new AppError(404, "Client not found");
+  }
+
+  const pdfBuffer = await generateInvoicePdf(invoice as any);
+
+  await sendInvoiceEmail({
+    to: invoice.client.email,
+    clientName: invoice.client.name,
+    // use invoiceNo field created in DB
+    invoiceNumber: invoice.invoiceNo ?? invoice.invoiceNumber ?? invoice.id,
+    total: invoice.total,
+    currency: invoice.currency,
+    dueDate: invoice.dueDate,
+    pdfBuffer,
+  });
+
+  return prisma.invoice.update({
+    where: { id: invoiceId },
+    data: { status: "SENT" },
+    include: { items: true, client: true },
+  });
+};
 
            
     

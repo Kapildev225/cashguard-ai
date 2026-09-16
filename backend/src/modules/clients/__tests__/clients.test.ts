@@ -3,8 +3,17 @@ import app from "../../../app";
 import jwt from "jsonwebtoken";
 import { email } from "zod/v4/mini";
 
+// const token = jwt.sign(
+//   { userId: 'seed-user-id', role: ['ADMIN', 'OWNER'], email: 'admin@example.com' },
+//   process.env.JWT_SECRET as string,
+//   { expiresIn: '7d' }
+// );
 const token = jwt.sign(
-  { userId: 'seed-user-id', role: ['ADMIN', 'OWNER'], email: 'admin@example.com' },
+  {
+    userId: '3b352036-559b-4bb1-8721-5668850da8e9',
+    role: 'OWNER',
+    email: 'owner@cashguard.test'
+  },
   process.env.JWT_SECRET as string,
   { expiresIn: '7d' }
 );
@@ -19,18 +28,18 @@ describe('Client Routes', () => {
                 phone: "1234567890"
             });
         expect(res.status).toBe(201);
-        expect(res.body).toHaveProperty("id");
+        expect(res.body.data).toHaveProperty("id");
     });
     it("LIsts clients with pagination and search", async () => {
         const res = await request(app)
             .get("/api/clients?page=1&limit=10&search=Test")    
         .set("Authorization", `Bearer ${token}`);
         expect(res.status).toBe(200);
-        expect(res.body).toHaveProperty("clients");
-        expect(res.body).toHaveProperty("total");
-        expect(res.body).toHaveProperty("page");
-        expect(res.body).toHaveProperty("limit");
-        expect(res.body).toHaveProperty("totalPages");
+        expect(res.body.data).toHaveProperty("clients");
+        expect(res.body.data).toHaveProperty("total");
+        expect(res.body.data).toHaveProperty("page");
+        expect(res.body.data).toHaveProperty("limit");
+        expect(res.body.data).toHaveProperty("totalPages");
     });
     
     it("rejects invalid email format when creating a client", async () => {
@@ -53,10 +62,10 @@ describe('Client Routes', () => {
 
         expect(createRes.status).toBe(201);
         const deleteRes = await request(app)
-            .delete(`/api/clients/${createRes.body.id}`)
+            .delete(`/api/clients/${createRes.body.data.id}`)
             .set('Authorization', `Bearer ${token}`);
         expect(deleteRes.status).toBe(200);
-        expect(deleteRes.body).toHaveProperty('message', 'Client deleted successfully');
+        expect(deleteRes.body.data).toHaveProperty('message', 'Client deleted successfully');
     });
     it('rejects unauthenticated users from accessing protected routes', async () => {
         const res = await request(app).get('/api/clients');

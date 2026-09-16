@@ -7,93 +7,104 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id           String    @id @default(cuid())
-  name         String
-  email        String    @unique
-  passwordHash String
-  role         Role      @default(OWNER)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  clients      Client[]
-  invoices     Invoice[]
-
-  @@map("users")
+model InvoiceItem {
+  id          String  @id @default(cuid())
+  invoiceId   String
+  description String
+  quantity    Float   @default(1)
+  unitPrice   Float
+  amount      Float
+  invoice     Invoice @relation(fields: [invoiceId], references: [id])
 }
 
 model Client {
-  id        String    @id @default(cuid())
-  userId    String
+  id String @id @default(cuid())
   name      String
   email     String
   phone     String?
   company   String?
-  riskScore Float?    @default(0)
+  notes     String?
+  userId    String
   createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  invoices  Invoice[]
+  riskScore Float?    @default(0)
+  updatedAt DateTime  @default(now())
+  User      User      @relation(fields: [userId], references: [id])
+  Invoice   Invoice[]
 
   @@index([userId])
-  @@map("clients")
 }
 
 model Invoice {
-  id        String        @id @default(cuid())
+   id String @id @default(cuid())
+  clientId  String
+  status    InvoiceStatus @default(DRAFT)
+  dueDate   DateTime
+  total     Decimal       @default(0)
+  createdAt DateTime      @default(now())
   invoiceNo String        @unique
   userId    String
-  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)     
-  clientId  String
-  client    Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  items     InvoiceItem[]
-  subtotal      Float
-  tax           Float         @default(0)
-  total         Float
+  subtotal  Float
+  tax       Float?        @default(0)
   amount    Decimal       @db.Decimal(12, 2)
-  currency  String        @default("INR")
-  dueDate   DateTime
-  status    InvoiceStatus @default(DRAFT)
+  currency  String?       @default("INR")
   notes     String?
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  payments  Payment[]
+  updatedAt DateTime      @default(now())
+  Client    Client        @relation(fields: [clientId], references: [id])
+  User      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     InvoiceItem[]
+  Payment   Payment[]
+  Reminder  Reminder[]
 
-  @@index([userId])
   @@index([clientId])
   @@index([status])
-  @@map("invoices")
+  @@index([userId])
 }
-model InvoiceItem{
-  id          String  @id @default(cuid())
-  invoiceId   String
-  invoice     Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
-  description String
-  quantity    Float
-  unitPrice   Float
-  amount      Float 
+
+model Notification {
+  id        String   @id
+  userId    String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  User      User     @relation(fields: [userId], references: [id])
 }
+
 model Payment {
-  id        String        @id @default(cuid())
+  id String @id @default(cuid())
   invoiceId String
-  amount    Decimal       @db.Decimal(12, 2)
-  method    PaymentMethod @default(BANK_TRANSFER)
-  paidAt    DateTime      @default(now())
-  createdAt DateTime      @default(now())
-  invoice   Invoice       @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  amount    Decimal
+  paidAt    DateTime       @default(now())
+  method    PaymentMethod? @default(BANK_TRANSFER)
+  createdAt DateTime       @default(now())
+  Invoice   Invoice        @relation(fields: [invoiceId], references: [id])
 
   @@index([invoiceId])
-  @@map("payments")
 }
 
-model playing_with_neon {
-  id    Int    @id @default(autoincrement())
-  name  String
-  value Float? @db.Real
+model Reminder {
+  id        String   @id
+  invoiceId String
+  sendAt    DateTime
+  sent      Boolean  @default(false)
+  Invoice   Invoice  @relation(fields: [invoiceId], references: [id])
+}
+
+model User {
+id String @id @default(cuid())
+  name         String
+  email        String         @unique
+  passwordHash String
+  role         Role           @default(OWNER)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @default(now())
+  Client       Client[]
+  Invoice      Invoice[]
+  Notification Notification[]
 }
 
 enum Role {
-  ADMIN
   OWNER
+  ADMIN
   STAFF
   USER
 }
@@ -101,10 +112,10 @@ enum Role {
 enum InvoiceStatus {
   DRAFT
   SENT
-  VIEWED
-  PARTIALLY_PAID
   PAID
   OVERDUE
+  VIEWED
+  PARTIALLY_PAID
   CANCELLED
 }
 

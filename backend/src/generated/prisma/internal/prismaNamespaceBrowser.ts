@@ -51,12 +51,13 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  User: 'User',
+  InvoiceItem: 'InvoiceItem',
   Client: 'Client',
   Invoice: 'Invoice',
-  InvoiceItem: 'InvoiceItem',
+  Notification: 'Notification',
   Payment: 'Payment',
-  playing_with_neon: 'playing_with_neon'
+  Reminder: 'Reminder',
+  User: 'User'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -75,54 +76,6 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const UserScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  email: 'email',
-  passwordHash: 'passwordHash',
-  role: 'role',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
-
-
-export const ClientScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  name: 'name',
-  email: 'email',
-  phone: 'phone',
-  company: 'company',
-  riskScore: 'riskScore',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof ClientScalarFieldEnum]
-
-
-export const InvoiceScalarFieldEnum = {
-  id: 'id',
-  invoiceNo: 'invoiceNo',
-  userId: 'userId',
-  clientId: 'clientId',
-  subtotal: 'subtotal',
-  tax: 'tax',
-  total: 'total',
-  amount: 'amount',
-  currency: 'currency',
-  dueDate: 'dueDate',
-  status: 'status',
-  notes: 'notes',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
-
-
 export const InvoiceItemScalarFieldEnum = {
   id: 'id',
   invoiceId: 'invoiceId',
@@ -135,25 +88,86 @@ export const InvoiceItemScalarFieldEnum = {
 export type InvoiceItemScalarFieldEnum = (typeof InvoiceItemScalarFieldEnum)[keyof typeof InvoiceItemScalarFieldEnum]
 
 
+export const ClientScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  company: 'company',
+  notes: 'notes',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  riskScore: 'riskScore',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof ClientScalarFieldEnum]
+
+
+export const InvoiceScalarFieldEnum = {
+  id: 'id',
+  clientId: 'clientId',
+  status: 'status',
+  dueDate: 'dueDate',
+  total: 'total',
+  createdAt: 'createdAt',
+  invoiceNo: 'invoiceNo',
+  userId: 'userId',
+  subtotal: 'subtotal',
+  tax: 'tax',
+  amount: 'amount',
+  currency: 'currency',
+  notes: 'notes',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+export const NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  message: 'message',
+  read: 'read',
+  createdAt: 'createdAt'
+} as const
+
+export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
 export const PaymentScalarFieldEnum = {
   id: 'id',
   invoiceId: 'invoiceId',
   amount: 'amount',
-  method: 'method',
   paidAt: 'paidAt',
+  method: 'method',
   createdAt: 'createdAt'
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
 
 
-export const Playing_with_neonScalarFieldEnum = {
+export const ReminderScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  value: 'value'
+  invoiceId: 'invoiceId',
+  sendAt: 'sendAt',
+  sent: 'sent'
 } as const
 
-export type Playing_with_neonScalarFieldEnum = (typeof Playing_with_neonScalarFieldEnum)[keyof typeof Playing_with_neonScalarFieldEnum]
+export type ReminderScalarFieldEnum = (typeof ReminderScalarFieldEnum)[keyof typeof ReminderScalarFieldEnum]
+
+
+export const UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  passwordHash: 'passwordHash',
+  role: 'role',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
 export const SortOrder = {

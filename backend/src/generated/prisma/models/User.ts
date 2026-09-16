@@ -198,8 +198,9 @@ export type UserWhereInput = {
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  clients?: Prisma.ClientListRelationFilter
-  invoices?: Prisma.InvoiceListRelationFilter
+  Client?: Prisma.ClientListRelationFilter
+  Invoice?: Prisma.InvoiceListRelationFilter
+  Notification?: Prisma.NotificationListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -210,8 +211,9 @@ export type UserOrderByWithRelationInput = {
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  clients?: Prisma.ClientOrderByRelationAggregateInput
-  invoices?: Prisma.InvoiceOrderByRelationAggregateInput
+  Client?: Prisma.ClientOrderByRelationAggregateInput
+  Invoice?: Prisma.InvoiceOrderByRelationAggregateInput
+  Notification?: Prisma.NotificationOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -225,8 +227,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  clients?: Prisma.ClientListRelationFilter
-  invoices?: Prisma.InvoiceListRelationFilter
+  Client?: Prisma.ClientListRelationFilter
+  Invoice?: Prisma.InvoiceListRelationFilter
+  Notification?: Prisma.NotificationListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -263,8 +266,9 @@ export type UserCreateInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   updatedAt?: Date | string
-  clients?: Prisma.ClientCreateNestedManyWithoutUserInput
-  invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  Client?: Prisma.ClientCreateNestedManyWithoutUserInput
+  Invoice?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -275,8 +279,9 @@ export type UserUncheckedCreateInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   updatedAt?: Date | string
-  clients?: Prisma.ClientUncheckedCreateNestedManyWithoutUserInput
-  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  Client?: Prisma.ClientUncheckedCreateNestedManyWithoutUserInput
+  Invoice?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -287,8 +292,9 @@ export type UserUpdateInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  clients?: Prisma.ClientUpdateManyWithoutUserNestedInput
-  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  Client?: Prisma.ClientUpdateManyWithoutUserNestedInput
+  Invoice?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -299,8 +305,9 @@ export type UserUncheckedUpdateInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  clients?: Prisma.ClientUncheckedUpdateManyWithoutUserNestedInput
-  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  Client?: Prisma.ClientUncheckedUpdateManyWithoutUserNestedInput
+  Invoice?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -333,6 +340,11 @@ export type UserUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type UserScalarRelationFilter = {
+  is?: Prisma.UserWhereInput
+  isNot?: Prisma.UserWhereInput
+}
+
 export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -363,52 +375,53 @@ export type UserMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type UserScalarRelationFilter = {
-  is?: Prisma.UserWhereInput
-  isNot?: Prisma.UserWhereInput
+export type UserCreateNestedOneWithoutClientInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutClientInput, Prisma.UserUncheckedCreateWithoutClientInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutClientInput
+  connect?: Prisma.UserWhereUniqueInput
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
+export type UserUpdateOneRequiredWithoutClientNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutClientInput, Prisma.UserUncheckedCreateWithoutClientInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutClientInput
+  upsert?: Prisma.UserUpsertWithoutClientInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutClientInput, Prisma.UserUpdateWithoutClientInput>, Prisma.UserUncheckedUpdateWithoutClientInput>
+}
+
+export type UserCreateNestedOneWithoutInvoiceInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInvoiceInput, Prisma.UserUncheckedCreateWithoutInvoiceInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInvoiceInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutInvoiceNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInvoiceInput, Prisma.UserUncheckedCreateWithoutInvoiceInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInvoiceInput
+  upsert?: Prisma.UserUpsertWithoutInvoiceInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInvoiceInput, Prisma.UserUpdateWithoutInvoiceInput>, Prisma.UserUncheckedUpdateWithoutInvoiceInput>
+}
+
+export type UserCreateNestedOneWithoutNotificationInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationInput, Prisma.UserUncheckedCreateWithoutNotificationInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutNotificationNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNotificationInput, Prisma.UserUncheckedCreateWithoutNotificationInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNotificationInput
+  upsert?: Prisma.UserUpsertWithoutNotificationInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNotificationInput, Prisma.UserUpdateWithoutNotificationInput>, Prisma.UserUncheckedUpdateWithoutNotificationInput>
 }
 
 export type EnumRoleFieldUpdateOperationsInput = {
   set?: $Enums.Role
 }
 
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
-}
-
-export type UserCreateNestedOneWithoutClientsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutClientsInput, Prisma.UserUncheckedCreateWithoutClientsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutClientsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutClientsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutClientsInput, Prisma.UserUncheckedCreateWithoutClientsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutClientsInput
-  upsert?: Prisma.UserUpsertWithoutClientsInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutClientsInput, Prisma.UserUpdateWithoutClientsInput>, Prisma.UserUncheckedUpdateWithoutClientsInput>
-}
-
-export type UserCreateNestedOneWithoutInvoicesInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutInvoicesInput, Prisma.UserUncheckedCreateWithoutInvoicesInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInvoicesInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneRequiredWithoutInvoicesNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutInvoicesInput, Prisma.UserUncheckedCreateWithoutInvoicesInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInvoicesInput
-  upsert?: Prisma.UserUpsertWithoutInvoicesInput
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInvoicesInput, Prisma.UserUpdateWithoutInvoicesInput>, Prisma.UserUncheckedUpdateWithoutInvoicesInput>
-}
-
-export type UserCreateWithoutClientsInput = {
+export type UserCreateWithoutClientInput = {
   id?: string
   name: string
   email: string
@@ -416,10 +429,11 @@ export type UserCreateWithoutClientsInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   updatedAt?: Date | string
-  invoices?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  Invoice?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
-export type UserUncheckedCreateWithoutClientsInput = {
+export type UserUncheckedCreateWithoutClientInput = {
   id?: string
   name: string
   email: string
@@ -427,26 +441,27 @@ export type UserUncheckedCreateWithoutClientsInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   updatedAt?: Date | string
-  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  Invoice?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
-export type UserCreateOrConnectWithoutClientsInput = {
+export type UserCreateOrConnectWithoutClientInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutClientsInput, Prisma.UserUncheckedCreateWithoutClientsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutClientInput, Prisma.UserUncheckedCreateWithoutClientInput>
 }
 
-export type UserUpsertWithoutClientsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutClientsInput, Prisma.UserUncheckedUpdateWithoutClientsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutClientsInput, Prisma.UserUncheckedCreateWithoutClientsInput>
+export type UserUpsertWithoutClientInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutClientInput, Prisma.UserUncheckedUpdateWithoutClientInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutClientInput, Prisma.UserUncheckedCreateWithoutClientInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutClientsInput = {
+export type UserUpdateToOneWithWhereWithoutClientInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutClientsInput, Prisma.UserUncheckedUpdateWithoutClientsInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutClientInput, Prisma.UserUncheckedUpdateWithoutClientInput>
 }
 
-export type UserUpdateWithoutClientsInput = {
+export type UserUpdateWithoutClientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -454,10 +469,11 @@ export type UserUpdateWithoutClientsInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  invoices?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  Invoice?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutClientsInput = {
+export type UserUncheckedUpdateWithoutClientInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -465,10 +481,11 @@ export type UserUncheckedUpdateWithoutClientsInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  Invoice?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
 }
 
-export type UserCreateWithoutInvoicesInput = {
+export type UserCreateWithoutInvoiceInput = {
   id?: string
   name: string
   email: string
@@ -476,10 +493,11 @@ export type UserCreateWithoutInvoicesInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   updatedAt?: Date | string
-  clients?: Prisma.ClientCreateNestedManyWithoutUserInput
+  Client?: Prisma.ClientCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationCreateNestedManyWithoutUserInput
 }
 
-export type UserUncheckedCreateWithoutInvoicesInput = {
+export type UserUncheckedCreateWithoutInvoiceInput = {
   id?: string
   name: string
   email: string
@@ -487,26 +505,27 @@ export type UserUncheckedCreateWithoutInvoicesInput = {
   role?: $Enums.Role
   createdAt?: Date | string
   updatedAt?: Date | string
-  clients?: Prisma.ClientUncheckedCreateNestedManyWithoutUserInput
+  Client?: Prisma.ClientUncheckedCreateNestedManyWithoutUserInput
+  Notification?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
 }
 
-export type UserCreateOrConnectWithoutInvoicesInput = {
+export type UserCreateOrConnectWithoutInvoiceInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutInvoicesInput, Prisma.UserUncheckedCreateWithoutInvoicesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutInvoiceInput, Prisma.UserUncheckedCreateWithoutInvoiceInput>
 }
 
-export type UserUpsertWithoutInvoicesInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutInvoicesInput, Prisma.UserUncheckedUpdateWithoutInvoicesInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutInvoicesInput, Prisma.UserUncheckedCreateWithoutInvoicesInput>
+export type UserUpsertWithoutInvoiceInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutInvoiceInput, Prisma.UserUncheckedUpdateWithoutInvoiceInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutInvoiceInput, Prisma.UserUncheckedCreateWithoutInvoiceInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutInvoicesInput = {
+export type UserUpdateToOneWithWhereWithoutInvoiceInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutInvoicesInput, Prisma.UserUncheckedUpdateWithoutInvoicesInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutInvoiceInput, Prisma.UserUncheckedUpdateWithoutInvoiceInput>
 }
 
-export type UserUpdateWithoutInvoicesInput = {
+export type UserUpdateWithoutInvoiceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -514,10 +533,11 @@ export type UserUpdateWithoutInvoicesInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  clients?: Prisma.ClientUpdateManyWithoutUserNestedInput
+  Client?: Prisma.ClientUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUpdateManyWithoutUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutInvoicesInput = {
+export type UserUncheckedUpdateWithoutInvoiceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -525,7 +545,72 @@ export type UserUncheckedUpdateWithoutInvoicesInput = {
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  clients?: Prisma.ClientUncheckedUpdateManyWithoutUserNestedInput
+  Client?: Prisma.ClientUncheckedUpdateManyWithoutUserNestedInput
+  Notification?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutNotificationInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  Client?: Prisma.ClientCreateNestedManyWithoutUserInput
+  Invoice?: Prisma.InvoiceCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutNotificationInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  Client?: Prisma.ClientUncheckedCreateNestedManyWithoutUserInput
+  Invoice?: Prisma.InvoiceUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutNotificationInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationInput, Prisma.UserUncheckedCreateWithoutNotificationInput>
+}
+
+export type UserUpsertWithoutNotificationInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutNotificationInput, Prisma.UserUncheckedUpdateWithoutNotificationInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutNotificationInput, Prisma.UserUncheckedCreateWithoutNotificationInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutNotificationInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutNotificationInput, Prisma.UserUncheckedUpdateWithoutNotificationInput>
+}
+
+export type UserUpdateWithoutNotificationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  Client?: Prisma.ClientUpdateManyWithoutUserNestedInput
+  Invoice?: Prisma.InvoiceUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutNotificationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  Client?: Prisma.ClientUncheckedUpdateManyWithoutUserNestedInput
+  Invoice?: Prisma.InvoiceUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -534,13 +619,15 @@ export type UserUncheckedUpdateWithoutInvoicesInput = {
  */
 
 export type UserCountOutputType = {
-  clients: number
-  invoices: number
+  Client: number
+  Invoice: number
+  Notification: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  clients?: boolean | UserCountOutputTypeCountClientsArgs
-  invoices?: boolean | UserCountOutputTypeCountInvoicesArgs
+  Client?: boolean | UserCountOutputTypeCountClientArgs
+  Invoice?: boolean | UserCountOutputTypeCountInvoiceArgs
+  Notification?: boolean | UserCountOutputTypeCountNotificationArgs
 }
 
 /**
@@ -556,15 +643,22 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountClientsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserCountOutputTypeCountClientArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ClientWhereInput
 }
 
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountInvoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserCountOutputTypeCountInvoiceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.InvoiceWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountNotificationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NotificationWhereInput
 }
 
 
@@ -576,8 +670,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  clients?: boolean | Prisma.User$clientsArgs<ExtArgs>
-  invoices?: boolean | Prisma.User$invoicesArgs<ExtArgs>
+  Client?: boolean | Prisma.User$ClientArgs<ExtArgs>
+  Invoice?: boolean | Prisma.User$InvoiceArgs<ExtArgs>
+  Notification?: boolean | Prisma.User$NotificationArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -613,8 +708,9 @@ export type UserSelectScalar = {
 
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "passwordHash" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  clients?: boolean | Prisma.User$clientsArgs<ExtArgs>
-  invoices?: boolean | Prisma.User$invoicesArgs<ExtArgs>
+  Client?: boolean | Prisma.User$ClientArgs<ExtArgs>
+  Invoice?: boolean | Prisma.User$InvoiceArgs<ExtArgs>
+  Notification?: boolean | Prisma.User$NotificationArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -623,8 +719,9 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
-    clients: Prisma.$ClientPayload<ExtArgs>[]
-    invoices: Prisma.$InvoicePayload<ExtArgs>[]
+    Client: Prisma.$ClientPayload<ExtArgs>[]
+    Invoice: Prisma.$InvoicePayload<ExtArgs>[]
+    Notification: Prisma.$NotificationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1028,8 +1125,9 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  clients<T extends Prisma.User$clientsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$clientsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  invoices<T extends Prisma.User$invoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  Client<T extends Prisma.User$ClientArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ClientArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  Invoice<T extends Prisma.User$InvoiceArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$InvoiceArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  Notification<T extends Prisma.User$NotificationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$NotificationArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1459,9 +1557,9 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * User.clients
+ * User.Client
  */
-export type User$clientsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$ClientArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Client
    */
@@ -1483,9 +1581,9 @@ export type User$clientsArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 }
 
 /**
- * User.invoices
+ * User.Invoice
  */
-export type User$invoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$InvoiceArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Invoice
    */
@@ -1504,6 +1602,30 @@ export type User$invoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.InvoiceScalarFieldEnum | Prisma.InvoiceScalarFieldEnum[]
+}
+
+/**
+ * User.Notification
+ */
+export type User$NotificationArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Notification
+   */
+  select?: Prisma.NotificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Notification
+   */
+  omit?: Prisma.NotificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NotificationInclude<ExtArgs> | null
+  where?: Prisma.NotificationWhereInput
+  orderBy?: Prisma.NotificationOrderByWithRelationInput | Prisma.NotificationOrderByWithRelationInput[]
+  cursor?: Prisma.NotificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
 }
 
 /**

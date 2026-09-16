@@ -10,8 +10,8 @@
 */
 
 export const Role = {
-  ADMIN: 'ADMIN',
   OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
   STAFF: 'STAFF',
   USER: 'USER'
 } as const
@@ -22,10 +22,10 @@ export type Role = (typeof Role)[keyof typeof Role]
 export const InvoiceStatus = {
   DRAFT: 'DRAFT',
   SENT: 'SENT',
-  VIEWED: 'VIEWED',
-  PARTIALLY_PAID: 'PARTIALLY_PAID',
   PAID: 'PAID',
   OVERDUE: 'OVERDUE',
+  VIEWED: 'VIEWED',
+  PARTIALLY_PAID: 'PARTIALLY_PAID',
   CANCELLED: 'CANCELLED'
 } as const
 
