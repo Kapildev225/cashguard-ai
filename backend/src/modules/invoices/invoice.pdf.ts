@@ -3,7 +3,7 @@ import {Invoice} from "../../generated/prisma/client";
 
 type InvoicewithRelations = Invoice & {
   items: { description: string; quantity: number; unitPrice: number; amount: number }[];
-  client: { name: string; email: string; company: string | null };
+  Client: { name: string; email: string; company: string | null };
 };
 const buildInvoiceHtml = (invoice:InvoicewithRelations):string => { 
     const rows = invoice.items.map(item => `
@@ -31,8 +31,8 @@ const buildInvoiceHtml = (invoice:InvoicewithRelations):string => {
     </head>
     <body>
       <h1>Invoice ${invoice.invoiceNo}</h1>
-      <p><strong>Bill To:</strong> ${invoice.client.name} (${invoice.client.email})</p>
-      ${invoice.client.company ? `<p><strong>Company:</strong> ${invoice.client.company}</p>` : ""}
+      <p><strong>Bill To:</strong> ${invoice.Client.name} (${invoice.Client.email})</p>
+      ${invoice.Client.company ? `<p><strong>Company:</strong> ${invoice.Client.company}</p>` : ""}
         <p><strong>Due Date:</strong> ${new Date(invoice.dueDate).toLocaleDateString()}</p>
 
       <table>
