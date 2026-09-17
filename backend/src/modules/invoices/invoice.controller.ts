@@ -17,7 +17,14 @@ export const createInvoiceHandler = asyncHandler(async (req: Request, res: Respo
 export const getInvoiceByIdHandler = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
   if (!id || Array.isArray(id)) throw new AppError(400, "Invalid id");
-  const invoice = await InvoiceService.getInvoiceById(id);
+  // const invoice = await InvoiceService.getInvoiceById(id);
+  const userId = (req as any).user?.userId ?? (req as any).user?.id;
+
+if (!userId) {
+    throw new AppError(401, "Unauthorized");
+}
+
+const invoice = await InvoiceService.getInvoiceById(id, userId);
   if (!invoice) throw new AppError(404, "Invoice not found");
   res.status(200).json(invoice);
 });
@@ -54,7 +61,9 @@ export const deleteInvoiceHandler = asyncHandler(async (req: Request, res: Respo
 export const downloadInvoicePdfHandler = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
   if (!id || Array.isArray(id)) throw new AppError(400, "Invalid id");
-  const invoice = await InvoiceService.getInvoiceById(id);
+  const userId = (req as any).user?.userId ?? (req as any).user?.id;
+  if (!userId) throw new AppError(401, "Unauthorized");
+  const invoice = await InvoiceService.getInvoiceById(id, userId);
   if (!invoice) throw new AppError(404, "Invoice not found");
   const pdfBuffer = await generateInvoicePdf(invoice as any);
 

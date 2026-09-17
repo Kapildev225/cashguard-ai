@@ -82,9 +82,9 @@ export const createInvoice = async (
         include: { items: true,Client: true },
   });
 };
-export const getInvoiceById = async (id: string): Promise<Invoice | null> => {
-    const invoice = await prisma.invoice.findUnique({
-        where: { id },
+export const getInvoiceById = async (id: string,userId: string): Promise<Invoice | null> => {
+    const invoice = await prisma.invoice.findFirst({
+        where: { id, userId },
         include: { items: true, Client: true, Payment: true },
     });
     return invoice;
@@ -107,33 +107,130 @@ export const getInvoicesByUser = async (userId: string, opts: { page?: number; l
     ]);
     return { invoices, total, page, limit, totalPages: Math.ceil(total / limit) };
 }
-    export const updateInvoice =async(userId: string, id: string, data: updateInvoiceInput): Promise<Invoice | null> => {
-    const invoice = await prisma.invoice.findUnique({ where: { id } });
-    if (!invoice) {
-        throw new AppError(404, "Invoice not found");
-    }
-    if (invoice.userId !== userId) {
-        throw new AppError(403, "Forbidden");
-    }
-    let totals: any = {};
-    if (data.items) {
-        const subtotal = calculateTotalAmount((data as any).items);
-        const total = subtotal + (data.tax ?? 0);
-        totals = { subtotal, total };
-    }
-    return prisma.invoice.update({
-        where: { id },
-        data: { 
+    // export const updateInvoice =async(userId: string, id: string, data: updateInvoiceInput): Promise<Invoice | null> => {
+    // const invoice = await prisma.invoice.findUnique({ where: { id } });
+    // if (!invoice) {
+        // throw new AppError(404, "Invoice not found");
+    // }
+    // if (invoice.userId !== userId) {
+        // throw new AppError(403, "Forbidden");
+    // }
+    // let totals: any = {};
+    // if (data.items) {
+        // const subtotal = calculateTotalAmount((data as any).items);
+        // const total = subtotal + (data.tax ?? 0);
+        // totals = { subtotal, total };
+    // }
+    // return prisma.invoice.update({
+        // where: { id },
+        // data: { 
 
-      ...(data.clientId && { clientId: data.clientId }),
-      ...(data.dueDate && { dueDate: new Date(data.dueDate as any) }),
-      ...(data.notes !== undefined && { notes: data.notes }),
-      ...(data.tax !== undefined && { tax: data.tax }),
+    //   ...(data.clientId && { clientId: data.clientId }),
+    //   ...(data.dueDate && { dueDate: new Date(data.dueDate as any) }),
+    //   ...(data.notes !== undefined && { notes: data.notes }),
+    //   ...(data.tax !== undefined && { tax: data.tax }),
+    //   ...totals,
+    //   ...(data.items && {
+        // items: {
+        //   deleteMany: {}, // clear old items, replace with new set
+        //   create: (data as any).items.map((item: any) => ({
+            // description: item.description,
+            // quantity: item.quantity,
+            // unitPrice: item.unitPrice,
+            // amount: item.quantity * item.unitPrice,
+        //   })),
+        // },
+    //   }),
+    // },
+    // include: { items: true },
+//   });
+// };
+export const updateInvoice = async (
+  userId: string,
+  id: string,
+  data: updateInvoiceInput
+): Promise<Invoice | null> => {
+  const invoice = await prisma.invoice.findUnique({
+    where: { id },
+  });
+
+  if (!invoice) {
+    throw new AppError(404, "Invoice not found");
+  }
+
+  if (invoice.userId !== userId) {
+    throw new AppError(403, "Forbidden");
+  }
+
+  // If clientId is being changed, verify the new client belongs to this user
+  if (data.clientId && data.clientId !== invoice.clientId) {
+    const client = await clientService.ClientService.getClientById(
+      data.clientId,
+      userId
+    );
+
+    if (!client) {
+      throw new AppError(404, "Client not found");
+    }
+  }
+
+  const newItems = data.items;
+  const newTax = data.tax !== undefined ? data.tax : invoice.tax ?? 0;
+
+  let totals = {};
+
+  if (newItems) {
+    const subtotal = calculateTotalAmount(newItems);
+    const total = subtotal + newTax;
+
+    totals = {
+      subtotal,
+      total,
+      amount: total,
+    };
+  } else if (data.tax !== undefined) {
+    const total = invoice.subtotal + newTax;
+
+    totals = {
+      total,
+      amount: total,
+    };
+  }
+
+  return prisma.invoice.update({
+    where: { id },
+
+    data: {
+      ...(data.clientId !== undefined && {
+        clientId: data.clientId,
+      }),
+
+      ...(data.dueDate !== undefined && {
+        dueDate: new Date(data.dueDate),
+      }),
+
+      ...(data.notes !== undefined && {
+        notes: data.notes,
+      }),
+
+      ...(data.tax !== undefined && {
+        tax: data.tax,
+      }),
+
+      ...(data.currency !== undefined && {
+        currency: data.currency,
+      }),
+
+      ...(data.status !== undefined && {
+        status: data.status,
+      }),
+
       ...totals,
-      ...(data.items && {
+
+      ...(newItems && {
         items: {
-          deleteMany: {}, // clear old items, replace with new set
-          create: (data as any).items.map((item: any) => ({
+          deleteMany: {},
+          create: newItems.map((item) => ({
             description: item.description,
             quantity: item.quantity,
             unitPrice: item.unitPrice,
@@ -142,7 +239,12 @@ export const getInvoicesByUser = async (userId: string, opts: { page?: number; l
         },
       }),
     },
-    include: { items: true },
+
+    include: {
+      items: true,
+      Client: true,
+      Payment: true,
+    },
   });
 };
 export const deleteInvoice = async (userId: string, id: string): Promise<Invoice | null> => {
@@ -156,7 +258,7 @@ export const deleteInvoice = async (userId: string, id: string): Promise<Invoice
 
 export const sendInvoice = async (userId: string, invoiceId: string) => {
   // get invoice (ensure relations are available)
-  let invoice = await getInvoiceById(invoiceId) as any;
+  let invoice = await getInvoiceById(invoiceId, userId) as any;
   if (!invoice) throw new AppError(404, "Invoice not found");
 
   // Ensure the invoice belongs to the requesting user

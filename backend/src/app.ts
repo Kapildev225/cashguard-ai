@@ -10,12 +10,14 @@ import userRoutes from "./modules/users/user.routes";
 import clientRoutes from "./modules/clients/client.routes";
 import invoiceRoutes from "./modules/invoices/invoice.routes";
 import aiRoutes from "./modules/ai/ai.routes";
+import  paymentRoutes from "./modules/payments/payment.routes";
 
 
 const app = express();
 
 app.use(helmet());
 app.use(cors());
+
 app.use(morgan("dev",{ stream: morganStream}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));    
@@ -32,6 +34,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/clients", clientRoutes);
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/ai", aiRoutes);
+app.use("/api/payments", paymentRoutes);
 
 
 app.use(errorHandler);

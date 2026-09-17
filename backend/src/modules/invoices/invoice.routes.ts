@@ -16,7 +16,7 @@ router.use(authMiddleware);
 
 // Invoice routes
 router.delete("/:id", requireRole("ADMIN", "OWNER"), deleteInvoiceHandler);
-router.put("/:id", requireRole("ADMIN", "OWNER"), updateInvoiceHandler);
+router.put("/:id", requireRole("ADMIN", "OWNER","STAFF"), updateInvoiceHandler);
 router.get("/:id/pdf", downloadInvoicePdfHandler);
 router.post("/:id/send", sendInvoiceHandler);
 router.get("/:id", getInvoiceByIdHandler);
