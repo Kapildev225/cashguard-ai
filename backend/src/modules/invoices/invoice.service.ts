@@ -69,7 +69,7 @@ export const createInvoice = async (
             currency: data.currency ?? 'INR',
             dueDate: new Date(data.dueDate),
             notes: data.notes ?? null,
-            status: data.status as any,
+        
             items: {
               create: (data as any).items?.map((item: any) => ({
                 description: item.description,
@@ -79,13 +79,13 @@ export const createInvoice = async (
               })) ?? [],
             },
         },
-        include: { items: true, client: true },
+        include: { items: true,Client: true },
   });
 };
 export const getInvoiceById = async (id: string): Promise<Invoice | null> => {
     const invoice = await prisma.invoice.findUnique({
         where: { id },
-        include: { items: true, client: true, payments: true },
+        include: { items: true, Client: true, Payment: true },
     });
     return invoice;
 };
@@ -102,7 +102,7 @@ export const getInvoicesByUser = async (userId: string, opts: { page?: number; l
         ];
     }
     const [invoices, total] = await prisma.$transaction([
-        prisma.invoice.findMany({ where, orderBy: { createdAt: 'desc' }, skip: (page - 1) * limit, take: limit, include: { items: true, client: true, payments: true } }),
+        prisma.invoice.findMany({ where, orderBy: { createdAt: 'desc' }, skip: (page - 1) * limit, take: limit, include: { items: true, Client: true, Payment: true } }),
         prisma.invoice.count({ where }),
     ]);
     return { invoices, total, page, limit, totalPages: Math.ceil(total / limit) };
@@ -163,16 +163,25 @@ export const sendInvoice = async (userId: string, invoiceId: string) => {
   if (invoice.userId !== userId) throw new AppError(403, "Forbidden");
 
   // If client relation is not present, load it
-  if (!invoice.client) {
-    invoice.client = await prisma.client.findUnique({ where: { id: invoice.clientId } });
-    if (!invoice.client) throw new AppError(404, "Client not found");
-  }
+//   if (!invoice.client) {
+    // invoice.client = await prisma.client.findUnique({ where: { id: invoice.clientId } });
+    // if (!invoice.client) throw new AppError(404, "Client not found");
+//   }
+if (!invoice.Client) {
+    invoice.Client = await prisma.client.findUnique({
+        where: { id: invoice.clientId }
+    });
+
+    if (!invoice.Client) {
+        throw new AppError(404, "Client not found");
+    }
+}
 
   const pdfBuffer = await generateInvoicePdf(invoice as any);
 
   await sendInvoiceEmail({
-    to: invoice.client.email,
-    clientName: invoice.client.name,
+    to: invoice.Client.email,
+    clientName: invoice.Client.name,
     // use invoiceNo field created in DB
     invoiceNumber: invoice.invoiceNo ?? invoice.invoiceNumber ?? invoice.id,
     total: invoice.total,
@@ -184,7 +193,7 @@ export const sendInvoice = async (userId: string, invoiceId: string) => {
   return prisma.invoice.update({
     where: { id: invoiceId },
     data: { status: "SENT" },
-    include: { items: true, client: true },
+    include: { items: true, Client: true },
   });
 };
 

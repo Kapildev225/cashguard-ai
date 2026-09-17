@@ -53,6 +53,99 @@ describe('Client Routes', () => {
             });
         expect(res.status).toBe(400);
     });
+    it("gets a single client by id", async () => {
+    const createRes = await request(app)
+        .post("/api/clients")
+        .set("Authorization", `Bearer ${token}`)
+        .send({
+            name: "Single Client",
+            email: "singleclient@example.com",
+            phone: "9876543210"
+        });
+
+    expect(createRes.status).toBe(201);
+
+    const clientId = createRes.body.data.id;
+
+    const res = await request(app)
+        .get(`/api/clients/${clientId}`)
+        .set("Authorization", `Bearer ${token}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.data).toHaveProperty("id", clientId);
+    expect(res.body.data).toHaveProperty("name", "Single Client");
+    expect(res.body.data).toHaveProperty(
+        "email",
+        "singleclient@example.com"
+    );
+});
+it("updates an existing client", async () => {
+    const createRes = await request(app)
+        .post("/api/clients")
+        .set("Authorization", `Bearer ${token}`)
+        .send({
+            name: "Update Client",
+            email: "update@example.com",
+            phone: "9876543210"
+        });
+
+    expect(createRes.status).toBe(201);
+
+    const clientId = createRes.body.data.id;
+
+    const updateRes = await request(app)
+        .put(`/api/clients/${clientId}`)
+        .set("Authorization", `Bearer ${token}`)
+        .send({
+            name: "Updated Client",
+            company: "CashGuard Technologies"
+        });
+
+    expect(updateRes.status).toBe(200);
+    expect(updateRes.body.data).toHaveProperty(
+        "name",
+        "Updated Client"
+    );
+    expect(updateRes.body.data).toHaveProperty(
+        "company",
+        "CashGuard Technologies"
+    );
+    expect(updateRes.body.data).toHaveProperty(
+        "email",
+        "update@example.com"
+    );
+});
+it("prevents a user from accessing another user's client", async () => {
+    const createRes = await request(app)
+        .post("/api/clients")
+        .set("Authorization", `Bearer ${token}`)
+        .send({
+            name: "Private Client",
+            email: "private@example.com"
+        });
+
+    expect(createRes.status).toBe(201);
+
+    const clientId = createRes.body.data.id;
+
+    const anotherUserToken = jwt.sign(
+        {
+            userId: "another-user-id",
+            role: "OWNER",
+            email: "another@example.com"
+        },
+        process.env.JWT_SECRET as string,
+        { expiresIn: "7d" }
+    );
+
+    const res = await request(app)
+        .get(`/api/clients/${clientId}`)
+        .set("Authorization", `Bearer ${anotherUserToken}`);
+
+    expect(res.status).toBe(404);
+    expect(res.body).toHaveProperty("message", "Client not found");
+});
+
     it("deletes the client", async () => {
         // create a client then delete it
         const createRes = await request(app)

@@ -49,7 +49,7 @@ const buildInvoiceHtml = (invoice:InvoicewithRelations):string => {
 
       <div class="totals">
         <p>Subtotal: $${invoice.subtotal.toFixed(2)}</p>
-        <p>Tax: $${invoice.tax.toFixed(2)}</p>
+        <p>Tax: $${(invoice.tax ?? 0).toFixed(2)}</p>
         <p class="grand-total">Total: $${invoice.total.toFixed(2)} ${invoice.currency}</p>
       </div>
 
