@@ -3,13 +3,14 @@ import { transporter } from "../../config/mailer";
 import { logger } from "../../config/logger";
 
 interface SendInvoiceEmailParams {
-  to: string;
-  clientName: string;
-  invoiceNumber: string;
-  total: number;
-  currency: string;
-  dueDate: Date;
-  pdfBuffer: Buffer;
+   to: string;
+   clientName: string;
+   invoiceNumber: string;
+   total: number;
+   currency: string;
+   dueDate: Date;
+   pdfBuffer: Buffer;
+   trackingToken: string;
 }
 
 export const sendInvoiceEmail = async ({
@@ -20,7 +21,9 @@ export const sendInvoiceEmail = async ({
   currency,
   dueDate,
   pdfBuffer,
+  trackingToken,
 }: SendInvoiceEmailParams) => {
+  const trackingUrl = `${process.env.API_BASE_URL}/api/invoices/track/${trackingToken}`;
   const html = `
     <div style="font-family: Arial, sans-serif; color: #333;">
       <p>Hi ${clientName},</p>

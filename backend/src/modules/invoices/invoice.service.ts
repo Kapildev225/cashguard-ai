@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import { prisma } from "../../config/prisma";
 import {AppError} from "../../middleware/errorHandler";
 import {createInvoiceInput, updateInvoiceInput} from "./invoice.validation";
@@ -278,7 +279,14 @@ if (!invoice.Client) {
         throw new AppError(404, "Client not found");
     }
 }
+const trackingToken = crypto.randomBytes(32).toString("hex");
 
+await prisma.invoice.update({
+  where: { id: invoiceId },
+  data: { emailTrackingToken: trackingToken },
+});
+
+invoice.emailTrackingToken = trackingToken;
   const pdfBuffer = await generateInvoicePdf(invoice as any);
 
   await sendInvoiceEmail({
@@ -290,6 +298,7 @@ if (!invoice.Client) {
     currency: invoice.currency,
     dueDate: invoice.dueDate,
     pdfBuffer,
+    trackingToken: trackingToken, 
   });
 
   return prisma.invoice.update({

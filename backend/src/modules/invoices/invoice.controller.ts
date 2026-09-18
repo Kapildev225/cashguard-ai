@@ -1,3 +1,5 @@
+import { Buffer } from "node:buffer";
+import { prisma } from "../../config/prisma";
 import { Request, Response } from "express";
 import { asyncHandler } from "../../middleware/asyncHandler";
 import { AppError } from "../../middleware/errorHandler";
@@ -83,3 +85,37 @@ export const sendInvoiceHandler = asyncHandler(async (req: Request, res: Respons
   const invoice = await InvoiceService.sendInvoice(userId, id);
   res.status(200).json(invoice);
 });  
+export const trackInvoiceEmailOpenHandler = asyncHandler(async (req, res) => {
+  const { token } = req.params;
+
+  if (!token || Array.isArray(token)) {
+    res.status(400).end();
+    return;
+  }
+
+  const invoice = await prisma.invoice.findUnique({
+    where: { emailTrackingToken: token },
+  });
+
+  if (invoice && !invoice.emailOpenedAt) {
+    await prisma.invoice.update({
+      where: { id: invoice.id },
+      data: { emailOpenedAt: new Date() },
+    });
+  }
+
+  const transparentPixel = Buffer.from(
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/5F1cGQAAAABJRU5ErkJggg==",
+    "base64"
+  );
+
+  res.set({
+    "Content-Type": "image/png",
+    "Content-Length": transparentPixel.length.toString(),
+    "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+    Pragma: "no-cache",
+    Expires: "0",
+  });
+
+  res.status(200).send(transparentPixel);
+});

@@ -49,6 +49,9 @@ model Invoice {
   currency  String?       @default("INR")
   notes     String?
   updatedAt DateTime      @default(now())
+  emailTrackingToken String?       @unique
+  emailOpenedAt      DateTime?
+
   Client    Client        @relation(fields: [clientId], references: [id])
   User      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   items     InvoiceItem[]

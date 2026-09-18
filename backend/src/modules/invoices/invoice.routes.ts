@@ -9,9 +9,13 @@ import {
   deleteInvoiceHandler,
   downloadInvoicePdfHandler,
   sendInvoiceHandler,
+  trackInvoiceEmailOpenHandler
 } from "./invoice.controller";
 
 const router = Router();
+
+//public route for tracking email opens
+router.get("/track/:token", trackInvoiceEmailOpenHandler);
 router.use(authMiddleware);
 
 // Invoice routes

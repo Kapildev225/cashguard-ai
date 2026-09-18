@@ -1009,7 +1009,9 @@ export const InvoiceScalarFieldEnum = {
   amount: 'amount',
   currency: 'currency',
   notes: 'notes',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  emailTrackingToken: 'emailTrackingToken',
+  emailOpenedAt: 'emailOpenedAt'
 } as const
 
 export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]

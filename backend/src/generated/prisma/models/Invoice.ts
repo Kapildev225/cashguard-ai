@@ -55,6 +55,8 @@ export type InvoiceMinAggregateOutputType = {
   currency: string | null
   notes: string | null
   updatedAt: Date | null
+  emailTrackingToken: string | null
+  emailOpenedAt: Date | null
 }
 
 export type InvoiceMaxAggregateOutputType = {
@@ -72,6 +74,8 @@ export type InvoiceMaxAggregateOutputType = {
   currency: string | null
   notes: string | null
   updatedAt: Date | null
+  emailTrackingToken: string | null
+  emailOpenedAt: Date | null
 }
 
 export type InvoiceCountAggregateOutputType = {
@@ -89,6 +93,8 @@ export type InvoiceCountAggregateOutputType = {
   currency: number
   notes: number
   updatedAt: number
+  emailTrackingToken: number
+  emailOpenedAt: number
   _all: number
 }
 
@@ -122,6 +128,8 @@ export type InvoiceMinAggregateInputType = {
   currency?: true
   notes?: true
   updatedAt?: true
+  emailTrackingToken?: true
+  emailOpenedAt?: true
 }
 
 export type InvoiceMaxAggregateInputType = {
@@ -139,6 +147,8 @@ export type InvoiceMaxAggregateInputType = {
   currency?: true
   notes?: true
   updatedAt?: true
+  emailTrackingToken?: true
+  emailOpenedAt?: true
 }
 
 export type InvoiceCountAggregateInputType = {
@@ -156,6 +166,8 @@ export type InvoiceCountAggregateInputType = {
   currency?: true
   notes?: true
   updatedAt?: true
+  emailTrackingToken?: true
+  emailOpenedAt?: true
   _all?: true
 }
 
@@ -260,6 +272,8 @@ export type InvoiceGroupByOutputType = {
   currency: string | null
   notes: string | null
   updatedAt: Date
+  emailTrackingToken: string | null
+  emailOpenedAt: Date | null
   _count: InvoiceCountAggregateOutputType | null
   _avg: InvoiceAvgAggregateOutputType | null
   _sum: InvoiceSumAggregateOutputType | null
@@ -300,6 +314,8 @@ export type InvoiceWhereInput = {
   currency?: Prisma.StringNullableFilter<"Invoice"> | string | null
   notes?: Prisma.StringNullableFilter<"Invoice"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"Invoice"> | Date | string
+  emailTrackingToken?: Prisma.StringNullableFilter<"Invoice"> | string | null
+  emailOpenedAt?: Prisma.DateTimeNullableFilter<"Invoice"> | Date | string | null
   Client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.ClientWhereInput>
   User?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   items?: Prisma.InvoiceItemListRelationFilter
@@ -322,6 +338,8 @@ export type InvoiceOrderByWithRelationInput = {
   currency?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  emailTrackingToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  emailOpenedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   Client?: Prisma.ClientOrderByWithRelationInput
   User?: Prisma.UserOrderByWithRelationInput
   items?: Prisma.InvoiceItemOrderByRelationAggregateInput
@@ -332,6 +350,7 @@ export type InvoiceOrderByWithRelationInput = {
 export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   invoiceNo?: string
+  emailTrackingToken?: string
   AND?: Prisma.InvoiceWhereInput | Prisma.InvoiceWhereInput[]
   OR?: Prisma.InvoiceWhereInput[]
   NOT?: Prisma.InvoiceWhereInput | Prisma.InvoiceWhereInput[]
@@ -347,12 +366,13 @@ export type InvoiceWhereUniqueInput = Prisma.AtLeast<{
   currency?: Prisma.StringNullableFilter<"Invoice"> | string | null
   notes?: Prisma.StringNullableFilter<"Invoice"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"Invoice"> | Date | string
+  emailOpenedAt?: Prisma.DateTimeNullableFilter<"Invoice"> | Date | string | null
   Client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.ClientWhereInput>
   User?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   items?: Prisma.InvoiceItemListRelationFilter
   Payment?: Prisma.PaymentListRelationFilter
   Reminder?: Prisma.ReminderListRelationFilter
-}, "id" | "invoiceNo">
+}, "id" | "invoiceNo" | "emailTrackingToken">
 
 export type InvoiceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -369,6 +389,8 @@ export type InvoiceOrderByWithAggregationInput = {
   currency?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  emailTrackingToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  emailOpenedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.InvoiceCountOrderByAggregateInput
   _avg?: Prisma.InvoiceAvgOrderByAggregateInput
   _max?: Prisma.InvoiceMaxOrderByAggregateInput
@@ -394,6 +416,8 @@ export type InvoiceScalarWhereWithAggregatesInput = {
   currency?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Invoice"> | Date | string
+  emailTrackingToken?: Prisma.StringNullableWithAggregatesFilter<"Invoice"> | string | null
+  emailOpenedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Invoice"> | Date | string | null
 }
 
 export type InvoiceCreateInput = {
@@ -409,6 +433,8 @@ export type InvoiceCreateInput = {
   currency?: string | null
   notes?: string | null
   updatedAt?: Date | string
+  emailTrackingToken?: string | null
+  emailOpenedAt?: Date | string | null
   Client: Prisma.ClientCreateNestedOneWithoutInvoiceInput
   User: Prisma.UserCreateNestedOneWithoutInvoiceInput
   items?: Prisma.InvoiceItemCreateNestedManyWithoutInvoiceInput
@@ -431,6 +457,8 @@ export type InvoiceUncheckedCreateInput = {
   currency?: string | null
   notes?: string | null
   updatedAt?: Date | string
+  emailTrackingToken?: string | null
+  emailOpenedAt?: Date | string | null
   items?: Prisma.InvoiceItemUncheckedCreateNestedManyWithoutInvoiceInput
   Payment?: Prisma.PaymentUncheckedCreateNestedManyWithoutInvoiceInput
   Reminder?: Prisma.ReminderUncheckedCreateNestedManyWithoutInvoiceInput
@@ -449,6 +477,8 @@ export type InvoiceUpdateInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailTrackingToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailOpenedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   Client?: Prisma.ClientUpdateOneRequiredWithoutInvoiceNestedInput
   User?: Prisma.UserUpdateOneRequiredWithoutInvoiceNestedInput
   items?: Prisma.InvoiceItemUpdateManyWithoutInvoiceNestedInput
@@ -471,6 +501,8 @@ export type InvoiceUncheckedUpdateInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailTrackingToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailOpenedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   items?: Prisma.InvoiceItemUncheckedUpdateManyWithoutInvoiceNestedInput
   Payment?: Prisma.PaymentUncheckedUpdateManyWithoutInvoiceNestedInput
   Reminder?: Prisma.ReminderUncheckedUpdateManyWithoutInvoiceNestedInput
@@ -491,6 +523,8 @@ export type InvoiceCreateManyInput = {
   currency?: string | null
   notes?: string | null
   updatedAt?: Date | string
+  emailTrackingToken?: string | null
+  emailOpenedAt?: Date | string | null
 }
 
 export type InvoiceUpdateManyMutationInput = {
@@ -506,6 +540,8 @@ export type InvoiceUpdateManyMutationInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailTrackingToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailOpenedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type InvoiceUncheckedUpdateManyInput = {
@@ -523,6 +559,8 @@ export type InvoiceUncheckedUpdateManyInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailTrackingToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailOpenedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type InvoiceScalarRelationFilter = {
@@ -555,6 +593,8 @@ export type InvoiceCountOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  emailTrackingToken?: Prisma.SortOrder
+  emailOpenedAt?: Prisma.SortOrder
 }
 
 export type InvoiceAvgOrderByAggregateInput = {
@@ -579,6 +619,8 @@ export type InvoiceMaxOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  emailTrackingToken?: Prisma.SortOrder
+  emailOpenedAt?: Prisma.SortOrder
 }
 
 export type InvoiceMinOrderByAggregateInput = {
@@ -596,6 +638,8 @@ export type InvoiceMinOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  emailTrackingToken?: Prisma.SortOrder
+  emailOpenedAt?: Prisma.SortOrder
 }
 
 export type InvoiceSumOrderByAggregateInput = {
@@ -671,6 +715,10 @@ export type DecimalFieldUpdateOperationsInput = {
   decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
   multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
   divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type InvoiceCreateNestedOneWithoutPaymentInput = {
@@ -756,6 +804,8 @@ export type InvoiceCreateWithoutItemsInput = {
   currency?: string | null
   notes?: string | null
   updatedAt?: Date | string
+  emailTrackingToken?: string | null
+  emailOpenedAt?: Date | string | null
   Client: Prisma.ClientCreateNestedOneWithoutInvoiceInput
   User: Prisma.UserCreateNestedOneWithoutInvoiceInput
   Payment?: Prisma.PaymentCreateNestedManyWithoutInvoiceInput
@@ -777,6 +827,8 @@ export type InvoiceUncheckedCreateWithoutItemsInput = {
   currency?: string | null
   notes?: string | null
   updatedAt?: Date | string
+  emailTrackingToken?: string | null
+  emailOpenedAt?: Date | string | null
   Payment?: Prisma.PaymentUncheckedCreateNestedManyWithoutInvoiceInput
   Reminder?: Prisma.ReminderUncheckedCreateNestedManyWithoutInvoiceInput
 }
@@ -810,6 +862,8 @@ export type InvoiceUpdateWithoutItemsInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailTrackingToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailOpenedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   Client?: Prisma.ClientUpdateOneRequiredWithoutInvoiceNestedInput
   User?: Prisma.UserUpdateOneRequiredWithoutInvoiceNestedInput
   Payment?: Prisma.PaymentUpdateManyWithoutInvoiceNestedInput
@@ -831,6 +885,8 @@ export type InvoiceUncheckedUpdateWithoutItemsInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailTrackingToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailOpenedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   Payment?: Prisma.PaymentUncheckedUpdateManyWithoutInvoiceNestedInput
   Reminder?: Prisma.ReminderUncheckedUpdateManyWithoutInvoiceNestedInput
 }
@@ -848,6 +904,8 @@ export type InvoiceCreateWithoutClientInput = {
   currency?: string | null
   notes?: string | null
   updatedAt?: Date | string
+  emailTrackingToken?: string | null
+  emailOpenedAt?: Date | string | null
   User: Prisma.UserCreateNestedOneWithoutInvoiceInput
   items?: Prisma.InvoiceItemCreateNestedManyWithoutInvoiceInput
   Payment?: Prisma.PaymentCreateNestedManyWithoutInvoiceInput
@@ -868,6 +926,8 @@ export type InvoiceUncheckedCreateWithoutClientInput = {
   currency?: string | null
   notes?: string | null
   updatedAt?: Date | string
+  emailTrackingToken?: string | null
+  emailOpenedAt?: Date | string | null
   items?: Prisma.InvoiceItemUncheckedCreateNestedManyWithoutInvoiceInput
   Payment?: Prisma.PaymentUncheckedCreateNestedManyWithoutInvoiceInput
   Reminder?: Prisma.ReminderUncheckedCreateNestedManyWithoutInvoiceInput
@@ -917,6 +977,8 @@ export type InvoiceScalarWhereInput = {
   currency?: Prisma.StringNullableFilter<"Invoice"> | string | null
   notes?: Prisma.StringNullableFilter<"Invoice"> | string | null
   updatedAt?: Prisma.DateTimeFilter<"Invoice"> | Date | string
+  emailTrackingToken?: Prisma.StringNullableFilter<"Invoice"> | string | null
+  emailOpenedAt?: Prisma.DateTimeNullableFilter<"Invoice"> | Date | string | null
 }
 
 export type InvoiceCreateWithoutPaymentInput = {
@@ -932,6 +994,8 @@ export type InvoiceCreateWithoutPaymentInput = {
   currency?: string | null
   notes?: string | null
   updatedAt?: Date | string
+  emailTrackingToken?: string | null
+  emailOpenedAt?: Date | string | null
   Client: Prisma.ClientCreateNestedOneWithoutInvoiceInput
   User: Prisma.UserCreateNestedOneWithoutInvoiceInput
   items?: Prisma.InvoiceItemCreateNestedManyWithoutInvoiceInput
@@ -953,6 +1017,8 @@ export type InvoiceUncheckedCreateWithoutPaymentInput = {
   currency?: string | null
   notes?: string | null
   updatedAt?: Date | string
+  emailTrackingToken?: string | null
+  emailOpenedAt?: Date | string | null
   items?: Prisma.InvoiceItemUncheckedCreateNestedManyWithoutInvoiceInput
   Reminder?: Prisma.ReminderUncheckedCreateNestedManyWithoutInvoiceInput
 }
@@ -986,6 +1052,8 @@ export type InvoiceUpdateWithoutPaymentInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailTrackingToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailOpenedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   Client?: Prisma.ClientUpdateOneRequiredWithoutInvoiceNestedInput
   User?: Prisma.UserUpdateOneRequiredWithoutInvoiceNestedInput
   items?: Prisma.InvoiceItemUpdateManyWithoutInvoiceNestedInput
@@ -1007,6 +1075,8 @@ export type InvoiceUncheckedUpdateWithoutPaymentInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailTrackingToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailOpenedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   items?: Prisma.InvoiceItemUncheckedUpdateManyWithoutInvoiceNestedInput
   Reminder?: Prisma.ReminderUncheckedUpdateManyWithoutInvoiceNestedInput
 }
@@ -1024,6 +1094,8 @@ export type InvoiceCreateWithoutReminderInput = {
   currency?: string | null
   notes?: string | null
   updatedAt?: Date | string
+  emailTrackingToken?: string | null
+  emailOpenedAt?: Date | string | null
   Client: Prisma.ClientCreateNestedOneWithoutInvoiceInput
   User: Prisma.UserCreateNestedOneWithoutInvoiceInput
   items?: Prisma.InvoiceItemCreateNestedManyWithoutInvoiceInput
@@ -1045,6 +1117,8 @@ export type InvoiceUncheckedCreateWithoutReminderInput = {
   currency?: string | null
   notes?: string | null
   updatedAt?: Date | string
+  emailTrackingToken?: string | null
+  emailOpenedAt?: Date | string | null
   items?: Prisma.InvoiceItemUncheckedCreateNestedManyWithoutInvoiceInput
   Payment?: Prisma.PaymentUncheckedCreateNestedManyWithoutInvoiceInput
 }
@@ -1078,6 +1152,8 @@ export type InvoiceUpdateWithoutReminderInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailTrackingToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailOpenedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   Client?: Prisma.ClientUpdateOneRequiredWithoutInvoiceNestedInput
   User?: Prisma.UserUpdateOneRequiredWithoutInvoiceNestedInput
   items?: Prisma.InvoiceItemUpdateManyWithoutInvoiceNestedInput
@@ -1099,6 +1175,8 @@ export type InvoiceUncheckedUpdateWithoutReminderInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailTrackingToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailOpenedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   items?: Prisma.InvoiceItemUncheckedUpdateManyWithoutInvoiceNestedInput
   Payment?: Prisma.PaymentUncheckedUpdateManyWithoutInvoiceNestedInput
 }
@@ -1116,6 +1194,8 @@ export type InvoiceCreateWithoutUserInput = {
   currency?: string | null
   notes?: string | null
   updatedAt?: Date | string
+  emailTrackingToken?: string | null
+  emailOpenedAt?: Date | string | null
   Client: Prisma.ClientCreateNestedOneWithoutInvoiceInput
   items?: Prisma.InvoiceItemCreateNestedManyWithoutInvoiceInput
   Payment?: Prisma.PaymentCreateNestedManyWithoutInvoiceInput
@@ -1136,6 +1216,8 @@ export type InvoiceUncheckedCreateWithoutUserInput = {
   currency?: string | null
   notes?: string | null
   updatedAt?: Date | string
+  emailTrackingToken?: string | null
+  emailOpenedAt?: Date | string | null
   items?: Prisma.InvoiceItemUncheckedCreateNestedManyWithoutInvoiceInput
   Payment?: Prisma.PaymentUncheckedCreateNestedManyWithoutInvoiceInput
   Reminder?: Prisma.ReminderUncheckedCreateNestedManyWithoutInvoiceInput
@@ -1181,6 +1263,8 @@ export type InvoiceCreateManyClientInput = {
   currency?: string | null
   notes?: string | null
   updatedAt?: Date | string
+  emailTrackingToken?: string | null
+  emailOpenedAt?: Date | string | null
 }
 
 export type InvoiceUpdateWithoutClientInput = {
@@ -1196,6 +1280,8 @@ export type InvoiceUpdateWithoutClientInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailTrackingToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailOpenedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   User?: Prisma.UserUpdateOneRequiredWithoutInvoiceNestedInput
   items?: Prisma.InvoiceItemUpdateManyWithoutInvoiceNestedInput
   Payment?: Prisma.PaymentUpdateManyWithoutInvoiceNestedInput
@@ -1216,6 +1302,8 @@ export type InvoiceUncheckedUpdateWithoutClientInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailTrackingToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailOpenedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   items?: Prisma.InvoiceItemUncheckedUpdateManyWithoutInvoiceNestedInput
   Payment?: Prisma.PaymentUncheckedUpdateManyWithoutInvoiceNestedInput
   Reminder?: Prisma.ReminderUncheckedUpdateManyWithoutInvoiceNestedInput
@@ -1235,6 +1323,8 @@ export type InvoiceUncheckedUpdateManyWithoutClientInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailTrackingToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailOpenedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type InvoiceCreateManyUserInput = {
@@ -1251,6 +1341,8 @@ export type InvoiceCreateManyUserInput = {
   currency?: string | null
   notes?: string | null
   updatedAt?: Date | string
+  emailTrackingToken?: string | null
+  emailOpenedAt?: Date | string | null
 }
 
 export type InvoiceUpdateWithoutUserInput = {
@@ -1266,6 +1358,8 @@ export type InvoiceUpdateWithoutUserInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailTrackingToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailOpenedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   Client?: Prisma.ClientUpdateOneRequiredWithoutInvoiceNestedInput
   items?: Prisma.InvoiceItemUpdateManyWithoutInvoiceNestedInput
   Payment?: Prisma.PaymentUpdateManyWithoutInvoiceNestedInput
@@ -1286,6 +1380,8 @@ export type InvoiceUncheckedUpdateWithoutUserInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailTrackingToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailOpenedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   items?: Prisma.InvoiceItemUncheckedUpdateManyWithoutInvoiceNestedInput
   Payment?: Prisma.PaymentUncheckedUpdateManyWithoutInvoiceNestedInput
   Reminder?: Prisma.ReminderUncheckedUpdateManyWithoutInvoiceNestedInput
@@ -1305,6 +1401,8 @@ export type InvoiceUncheckedUpdateManyWithoutUserInput = {
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  emailTrackingToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailOpenedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -1371,6 +1469,8 @@ export type InvoiceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   currency?: boolean
   notes?: boolean
   updatedAt?: boolean
+  emailTrackingToken?: boolean
+  emailOpenedAt?: boolean
   Client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   User?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   items?: boolean | Prisma.Invoice$itemsArgs<ExtArgs>
@@ -1394,6 +1494,8 @@ export type InvoiceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   currency?: boolean
   notes?: boolean
   updatedAt?: boolean
+  emailTrackingToken?: boolean
+  emailOpenedAt?: boolean
   Client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   User?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["invoice"]>
@@ -1413,6 +1515,8 @@ export type InvoiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   currency?: boolean
   notes?: boolean
   updatedAt?: boolean
+  emailTrackingToken?: boolean
+  emailOpenedAt?: boolean
   Client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   User?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["invoice"]>
@@ -1432,9 +1536,11 @@ export type InvoiceSelectScalar = {
   currency?: boolean
   notes?: boolean
   updatedAt?: boolean
+  emailTrackingToken?: boolean
+  emailOpenedAt?: boolean
 }
 
-export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clientId" | "status" | "dueDate" | "total" | "createdAt" | "invoiceNo" | "userId" | "subtotal" | "tax" | "amount" | "currency" | "notes" | "updatedAt", ExtArgs["result"]["invoice"]>
+export type InvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clientId" | "status" | "dueDate" | "total" | "createdAt" | "invoiceNo" | "userId" | "subtotal" | "tax" | "amount" | "currency" | "notes" | "updatedAt" | "emailTrackingToken" | "emailOpenedAt", ExtArgs["result"]["invoice"]>
 export type InvoiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   Client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
   User?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1476,6 +1582,8 @@ export type $InvoicePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     currency: string | null
     notes: string | null
     updatedAt: Date
+    emailTrackingToken: string | null
+    emailOpenedAt: Date | null
   }, ExtArgs["result"]["invoice"]>
   composites: {}
 }
@@ -1918,6 +2026,8 @@ export interface InvoiceFieldRefs {
   readonly currency: Prisma.FieldRef<"Invoice", 'String'>
   readonly notes: Prisma.FieldRef<"Invoice", 'String'>
   readonly updatedAt: Prisma.FieldRef<"Invoice", 'DateTime'>
+  readonly emailTrackingToken: Prisma.FieldRef<"Invoice", 'String'>
+  readonly emailOpenedAt: Prisma.FieldRef<"Invoice", 'DateTime'>
 }
     
 
