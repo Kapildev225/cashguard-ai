@@ -1,3 +1,4 @@
+import{getCache,setCache,deleteCache,deleteInvoiceCache}from"../../utils/cache";
 import crypto from "crypto";
 import { prisma } from "../../config/prisma";
 import {AppError} from "../../middleware/errorHandler";
@@ -58,31 +59,38 @@ export const createInvoice = async (
 
     const invoiceNumber =
         await generateInvoiceNumber(forUserId);
-   return prisma.invoice.create({
-        data: {
-            invoiceNo: invoiceNumber,
-            userId: forUserId,
-            clientId: data.clientId,
-            subtotal,
-            tax,
-            total,
-            amount: total,
-            currency: data.currency ?? 'INR',
-            dueDate: new Date(data.dueDate),
-            notes: data.notes ?? null,
-        
-            items: {
-              create: (data as any).items?.map((item: any) => ({
-                description: item.description,
-                quantity: item.quantity,
-                unitPrice: item.unitPrice,
-                amount: item.quantity * item.unitPrice,
-              })) ?? [],
-            },
-        },
-        include: { items: true,Client: true },
-  });
-};
+   const invoice = await prisma.invoice.create({
+  data: {
+    invoiceNo: invoiceNumber,
+    userId: forUserId,
+    clientId: data.clientId,
+    subtotal,
+    tax,
+    total,
+    amount: total,
+    currency: data.currency ?? "INR",
+    dueDate: new Date(data.dueDate),
+    notes: data.notes ?? null,
+
+    items: {
+      create: (data as any).items?.map((item: any) => ({
+        description: item.description,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice,
+        amount: item.quantity * item.unitPrice,
+      })) ?? [],
+    },
+  },
+  include: {
+    items: true,
+    Client: true,
+  },
+});
+
+await deleteInvoiceCache(forUserId);
+
+return invoice;
+}
 export const getInvoiceById = async (id: string,userId: string): Promise<Invoice | null> => {
     const invoice = await prisma.invoice.findFirst({
         where: { id, userId },
@@ -90,24 +98,96 @@ export const getInvoiceById = async (id: string,userId: string): Promise<Invoice
     });
     return invoice;
 };
-export const getInvoicesByUser = async (userId: string, opts: { page?: number; limit?: number; search?: string } = { page: 1, limit: 20 }) => {
-    const page = opts.page ?? 1;
-    const limit = opts.limit ?? 20;
-    const search = opts.search?.trim();
-    const where: any = { userId };
-    if (search) {
-        // prisma schema stores the invoice identifier in `invoiceNo`
-        where.OR = [
-            { invoiceNo: { contains: search, mode: 'insensitive' as const } },
-            { notes: { contains: search, mode: 'insensitive' as const } },
-        ];
-    }
-    const [invoices, total] = await prisma.$transaction([
-        prisma.invoice.findMany({ where, orderBy: { createdAt: 'desc' }, skip: (page - 1) * limit, take: limit, include: { items: true, Client: true, Payment: true } }),
-        prisma.invoice.count({ where }),
-    ]);
-    return { invoices, total, page, limit, totalPages: Math.ceil(total / limit) };
-}
+ 
+
+export const getInvoicesByUser = async (
+  userId: string,
+  opts: { page?: number; limit?: number; search?: string } = {}
+) => {
+  const page = opts.page ?? 1;
+  const limit = opts.limit ?? 20;
+  const search = opts.search?.trim();
+
+  const cacheKey = `invoices:${userId}:page:${page}:limit:${limit}:search:${search ?? ""}`;
+
+  // 1. Check Redis first
+  const cached = await getCache<{
+    invoices: unknown[];
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  }>(cacheKey);
+
+  if (cached) {
+    console.log("⚡ Invoice list served from Redis cache");
+    return cached;
+  }
+
+  // 2. Fetch from PostgreSQL if not cached
+  const where: any = { userId };
+
+  if (search) {
+    where.OR = [
+      {
+        invoiceNo: {
+          contains: search,
+          mode: "insensitive" as const,
+        },
+      },
+      {
+        notes: {
+          contains: search,
+          mode: "insensitive" as const,
+        },
+      },
+    ];
+  }
+
+  const [invoices, total] = await prisma.$transaction([
+    prisma.invoice.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      skip: (page - 1) * limit,
+      take: limit,
+      include: {
+        items: true,
+        Client: true,
+        Payment: true,
+      },
+    }),
+    prisma.invoice.count({ where }),
+  ]);
+
+  const result = {
+    invoices,
+    total,
+    page,
+    limit,
+    totalPages: Math.ceil(total / limit),
+  };
+
+  // 3. Store result in Redis for 5 minutes
+  await setCache(cacheKey, result, 300);
+
+  console.log("💾 Invoice list stored in Redis cache");
+
+  return result;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // export const updateInvoice =async(userId: string, id: string, data: updateInvoiceInput): Promise<Invoice | null> => {
     // const invoice = await prisma.invoice.findUnique({ where: { id } });
     // if (!invoice) {
@@ -254,8 +334,15 @@ export const deleteInvoice = async (userId: string, id: string): Promise<Invoice
         throw new AppError(404, "Invoice not found");
     }
     if (invoice.userId !== userId) throw new AppError(403, "Forbidden");
-    return prisma.invoice.delete({ where: { id } });
-};
+    
+
+  const deletedInvoice = await prisma.invoice.delete({
+    where: { id },
+  });
+  await deleteInvoiceCache(userId);
+
+  return deletedInvoice;
+}
 
 export const sendInvoice = async (userId: string, invoiceId: string) => {
   // get invoice (ensure relations are available)

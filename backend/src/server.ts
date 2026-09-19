@@ -1,3 +1,4 @@
+import"./config/redis";
 import "dotenv/config";
 import app from "./app";
 import "./config/mailer"

@@ -1,3 +1,4 @@
+import { deleteInvoiceCache } from "../../utils/cache";
 import { AppError } from "../../middleware/errorHandler";
 import { PaymentRepository } from "./payment.respository";
 import { prisma } from "../../config/prisma";
@@ -60,12 +61,16 @@ export const createPayment = async (
     status = "PARTIALLY_PAID";
   }
 
+  
   await prisma.invoice.update({
-    where: { id: invoice.id },
-    data: { status },
-  });
+  where: { id: invoice.id },
+  data: { status },
+});
 
-  return payment;
+await deleteInvoiceCache(userId);
+
+return payment;
+  
 };
 
 export const getInvoicePayments = async (
@@ -102,7 +107,6 @@ export const getPaymentById = async (
 
   return payment;
 };
-
 export const deletePayment = async (
   userId: string,
   paymentId: string
@@ -119,5 +123,20 @@ export const deletePayment = async (
 
   await PaymentRepository.delete(paymentId);
 
+  await deleteInvoiceCache(userId);
+
   return payment;
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
