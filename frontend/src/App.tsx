@@ -1,7 +1,8 @@
 import { Routes, Route, Link } from "react-router-dom";
 import { ClientsPage } from "./wrapper/pages/Clients/ClientsPage";
 // InvoicesPage is exported as the default export from its module — import default to avoid TS2305
-import { InvoicesPage } from "./wrapper/pages/Invoices/Invoicespage"; // Corrected casing
+// import { InvoicesPage } from "./wrapper/pages/Invoices/Invoicespage"; // Corrected casing
+import { InvoicesPage } from "./wrapper/pages/Invoices/InvoicesPage";
 import { AuthProvider } from "./wrapper/context/AuthContext"; // Import AuthProvider
 
 
