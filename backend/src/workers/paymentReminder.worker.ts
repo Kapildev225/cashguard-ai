@@ -2,27 +2,53 @@ import { Worker, Job } from "bullmq";
 import { bullmqConnection } from "../config/bullmq";
 import { PAYMENT_REMINDER_QUEUE } from "../queues/paymentReminder.queue";
 import { PaymentReminderJobData } from "../queues/paymentReminder.types";
+import { sendPaymentReminderEmail } from "../modules/reminders/reminder.email";
+import { prisma } from "../config/prisma";
 
 export const paymentReminderWorker = new Worker<PaymentReminderJobData>(
   PAYMENT_REMINDER_QUEUE,
   async (job: Job<PaymentReminderJobData>) => {
-    console.log("📨 Processing payment reminder job:", job.id);
+  console.log("📨 Processing payment reminder job:", job.id);
 
-    console.log({
-      invoiceId: job.data.invoiceId,
-      clientEmail: job.data.clientEmail,
-      invoiceNumber: job.data.invoiceNumber,
-      amountDue: job.data.amountDue,
-      reminderType: job.data.reminderType,
-    });
+  const {
+    invoiceId,
+    clientEmail,
+    clientName,
+    invoiceNumber,
+    amountDue,
+    currency,
+    dueDate,
+    reminderType,
+  } = job.data;
 
-    // Actual reminder/email processing will be implemented on Day 6.
+  await sendPaymentReminderEmail({
+    to: clientEmail,
+    clientName,
+    invoiceNumber,
+    amountDue,
+    currency,
+    dueDate,
+    reminderType,
+  });
 
-    return {
-      success: true,
-      processedAt: new Date().toISOString(),
-    };
-  },
+  await prisma.reminder.updateMany({
+    where: {
+      invoiceId,
+      sent: false,
+    },
+    data: {
+      sent: true,
+    },
+  });
+
+  console.log(`✅ Reminder email sent for ${invoiceNumber}`);
+
+  return {
+    success: true,
+    processedAt: new Date().toISOString(),
+  };
+},
+
   {
     connection: bullmqConnection,
     concurrency: 5,
