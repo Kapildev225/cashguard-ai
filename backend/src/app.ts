@@ -11,7 +11,7 @@ import clientRoutes from "./modules/clients/client.routes";
 import invoiceRoutes from "./modules/invoices/invoice.routes";
 import aiRoutes from "./modules/ai/ai.routes";
 import  paymentRoutes from "./modules/payments/payment.routes";
-
+import dashboardRoutes from "./modules/dashboard/dashboard.routes";
 
 const app = express();
 
@@ -35,6 +35,7 @@ app.use("/api/clients", clientRoutes);
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/payments", paymentRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 
 app.use(errorHandler);
