@@ -8,7 +8,7 @@ import type {Invoice} from "../../generated/prisma/client";
 import* as clientService from "../clients/client.service";
 import { generateInvoicePdf } from "./invoice.pdf";
 import { sendInvoiceEmail } from "./invoice.email";
-
+import { sendUserNotification } from "../../services/notification.service";
 const calculateTotalAmount = (items: { description: string; quantity: number; unitPrice: number }[] = []): number => {
     return items.reduce((total, item) => total + item.quantity * item.unitPrice, 0);
 }
@@ -89,6 +89,16 @@ export const createInvoice = async (
 
 await deleteInvoiceCache(forUserId);
 
+sendUserNotification(forUserId, {
+  type: "INVOICE_CREATED",
+  title: "Invoice Created",
+  message: `Invoice ${invoice.invoiceNo} has been created successfully.`,
+  data: {
+    invoiceId: invoice.id,
+    invoiceNo: invoice.invoiceNo,
+    total: Number(invoice.total),
+  },
+});
 return invoice;
 }
 export const getInvoiceById = async (id: string,userId: string): Promise<Invoice | null> => {

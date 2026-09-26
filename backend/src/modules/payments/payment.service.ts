@@ -1,3 +1,4 @@
+import { sendUserNotification } from "../../services/notification.service";
 import { deleteInvoiceCache } from "../../utils/cache";
 import { AppError } from "../../middleware/errorHandler";
 import { PaymentRepository } from "./payment.respository";
@@ -68,6 +69,16 @@ export const createPayment = async (
 });
 
 await deleteInvoiceCache(userId);
+sendUserNotification(userId, {
+  type: "PAYMENT_RECEIVED",
+  title: "Payment Received",
+  message: `Payment of ₹${paymentAmount.toFixed(2)} received for invoice ${invoice.invoiceNo}.`,
+  data: {
+    paymentId: payment.id,
+    invoiceId: invoice.id,
+    amount: paymentAmount,
+  },
+});
 
 return payment;
   
