@@ -78,29 +78,4 @@ The platform combines financial analytics, AI-powered predictions, fraud detecti
 
 ---
 
-# 🏗️ System Architecture
 
-```text
-                    ┌──────────────────────┐
-                    │      Frontend        │
-                    │   React + TypeScript  │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │      API Layer       │
-                    │  Node.js + Express   │
-                    └──────────┬───────────┘
-                               │
-             ┌─────────────────┼─────────────────┐
-             │                 │                 │
-             ▼                 ▼                 ▼
-      ┌────────────┐    ┌────────────┐   ┌────────────┐
-      │ PostgreSQL │    │   Redis    │   │ AI Service │
-      │  Database  │    │   Cache    │   │ Predictions│
-      └────────────┘    └────────────┘   └────────────┘
-             │
-             ▼
-      ┌────────────┐
-      │  Prisma ORM│
-      └────────────┘
