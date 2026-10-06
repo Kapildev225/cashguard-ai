@@ -1,6 +1,12 @@
-node_modules
-dist
-# Keep environment variables out of version control
-.env
-
-/src/generated/prisma
+node_modules/
+dist/
+src/generated/prisma/
+*.env
+.env.example
+/.idea
+.vscode
+npm-debug.log
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+logs/

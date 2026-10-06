@@ -1,52 +1,66 @@
-import dotenv from "dotenv";
-import express from "express";
-import cors from "cors";
-import helmet from "helmet";
-import { authRouter } from "./routes/auth";
-import { clientsRouter } from "./routes/clients";
-import { requireAuth, requireRole } from "./middleware/auth";
+import "dotenv/config";
 
-dotenv.config({ override: true });
+import { createServer } from "http";
+import { Server } from "socket.io";
 
-const app = express();
-const PORT = process.env["PORT"] ?? 5000;
+import { stopWorkers, startWorkers } from "./workers";
+import "./config/redis";
+import app from "./app";
+import "./config/mailer";
+import { schedulePaymentReminders } from "./services/reminderScheduler";
 
-app.use(helmet());
-app.use(cors());
-app.use(express.json());
+const PORT = process.env.PORT || 3000;
 
-app.get("/api/health", (_req, res) => {
-  res.json({ status: "ok", timestamp: new Date().toISOString() });
+// Create HTTP server from Express app
+const httpServer = createServer(app);
+
+// Initialize Socket.IO
+export const io = new Server(httpServer, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+  },
 });
 
-// Convenience root route so visiting http://localhost:3000/ returns the same
-// health JSON as /api/health. This makes it easier to quickly confirm the
-// server is running in the browser without remembering the /api prefix.
-app.get("/", (_req, res) => {
-  res.json({ status: "ok", timestamp: new Date().toISOString() });
+// Socket.IO connection handling
+io.on("connection", (socket) => {
+  console.log(`🔌 Socket connected: ${socket.id}`);
+
+  socket.on("join-user-room", (userId: string) => {
+    socket.join(`user:${userId}`);
+    console.log(`👤 User ${userId} joined room`);
+  });
+
+  socket.on("disconnect", () => {
+    console.log(`🔌 Socket disconnected: ${socket.id}`);
+  });
 });
 
-app.use("/api/auth", authRouter);
-app.use("/api/clients", clientsRouter);
+httpServer.listen(PORT, async () => {
+  console.log(`Server is running on port ${PORT}`);
+  console.log("🔔 Socket.IO server started");
 
-app.get("/api/me", requireAuth, (req: any, res) => {
-  res.json({ user: req.user });
+  startWorkers();
+
+  await schedulePaymentReminders();
 });
 
-app.get("/api/admin/check", requireAuth, requireRole("ADMIN"), (_req, res) => {
-  res.json({ ok: true });
-});
-
-app.use((error: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  console.error(error);
-
-  if (typeof error === "object" && error && "code" in error && error.code === "P2002") {
-    return res.status(409).json({ error: "a record with this unique value already exists" });
+setInterval(async () => {
+  try {
+    await schedulePaymentReminders();
+  } catch (error) {
+    console.error("❌ Reminder scheduler error:", error);
   }
+}, 60 * 60 * 1000);
 
-  return res.status(500).json({ error: "internal server error" });
+process.on("SIGINT", async () => {
+  await stopWorkers();
+  httpServer.close();
+  process.exit(0);
 });
 
-app.listen(PORT, () => {
-  console.log(`CashGuard AI backend listening on http://localhost:${PORT}`);
+process.on("SIGTERM", async () => {
+  await stopWorkers();
+  httpServer.close();
+  process.exit(0);
 });

@@ -2,15 +2,17 @@
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
-    "rootDir": "./src",
+    "rootDir": "./",
     "outDir": "./dist",
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
     "module": "commonjs",
-    "target": "es2020",
-    "types": ["node"],
-    "esModuleInterop": true,
+    "target":"ES2020", 
+    "types": ["node", "jest"],
+    "resolveJsonModule": true,
+     "esModuleInterop": true,
+
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
@@ -35,11 +37,17 @@
 
     // Recommended Options
     "strict": true,
-    "verbatimModuleSyntax": false,
+    // "jsx": "react-jsx",
+    // "verbatimModuleSyntax": true,
     "isolatedModules": true,
-    "noUncheckedSideEffectImports": true,
-    "moduleDetection": "force",
+    // "noUncheckedSideEffectImports": true,
+    // "moduleDetection": "force",
     "skipLibCheck": true,
   },
-  "exclude": ["prisma.config.ts", "node_modules", "dist", "prisma"]
+   "include": ["src/**/*.ts", "prisma/**/*"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "prisma.config.ts"
+  ]
 }
