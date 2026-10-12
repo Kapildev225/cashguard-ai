@@ -22,7 +22,8 @@ export function requireAuth(req: AuthenticatedRequest, res: Response, next: Next
   email: "",
   role: payload.role as any,
   };
-   
+  return next();  
+
   } catch (error) {
     return res.status(401).json({ error: "invalid token" });
   }

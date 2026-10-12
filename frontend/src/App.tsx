@@ -1,36 +1,46 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { LoginPage } from "./wrapper/pages/Login/LoginPage";
+import { DashboardPage } from "./wrapper/Dashboard/DashboardPage";
 import { ClientsPage } from "./wrapper/pages/Clients/ClientsPage";
-// InvoicesPage is exported as the default export from its module — import default to avoid TS2305
-// import { InvoicesPage } from "./wrapper/pages/Invoices/Invoicespage"; // Corrected casing
 import { InvoicesPage } from "./wrapper/pages/Invoices/InvoicesPage";
-import { AuthProvider } from "./wrapper/context/AuthContext"; // Import AuthProvider
-
+import InvoicePreviewPage from "./wrapper/pages/Invoices/InvoicePreviewPage";
+import PaymentsPage from "./wrapper/pages/Clients/Payments/PaymentsPage";
+import RemindersPage from "./wrapper/pages/Reminder/RemindersPage";
+import AIInsightsPage from "./wrapper/pages/AIInsights/AIInsightsPage";
+import AIFinanceCopilotPage from "./wrapper/pages/AICopilot/AIFinanceCopilotPage";
+import NegotiationAssistantPage from "./wrapper/pages/NegotiationAssistant/NegotiationAssistantPage";
+import CashFlowPage from "./wrapper/pages/CashFlow/CashFlowPage";
+import BusinessHealthPage from "./wrapper/pages/BusinessHealth/BusinessHealthpage"
+import FraudDetectionPage from "./wrapper/pages/FraudDetection/FraudDetectionPage";
+import PaymentAnomalyPage from "./wrapper/pages/PaymentAnomaly/PaymentAnomalyPage";
+// import NotificationBell from "./wrapper/components/NotificationBell";
+// import Sidebar from "./wrapper/Layout/Sidebar";
+import NotificationsPage from "./wrapper/pages/Notifications/NotificationPage";
+import SettingsPage from "./wrapper/pages/Settings/SettingsPage";
 
 function App() {
   return (
-    <AuthProvider> {/* Wrap with AuthProvider */}
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <div className="min-h-screen flex flex-col items-center justify-center bg-slate-900">
-              <h1 className="text-5xl font-bold text-cyan-400">CashGuard AI</h1>
-              <Link to="/clients" className="mt-4 text-xl text-blue-400 hover:underline">
-                Go to Clients
-              </Link>
-              <Link to="/invoices" className="mt-2 text-xl text-blue-400 hover:underline">
-                Go to Invoices
-              </Link>
-            </div>
-          }
-        />
-        <Route path="/clients" element={<ClientsPage />} />
-        <Route path="/invoices" element={<InvoicesPage />} />
-        {/* <Route path ="/login" element={<Login />} />   */}
-        {/* Added InvoicesPage route */}
-      </Routes>
-    </AuthProvider>
+    <Routes>
+      <Route path="/" element={<LoginPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/clients" element={<ClientsPage />} />
+      <Route path="/invoices" element={<InvoicesPage />} />
+      <Route path="/invoices/preview" element={<InvoicePreviewPage />} />
+      <Route path="/invoices/preview/:id" element={<InvoicePreviewPage />} />
+      <Route path="/payments" element={<PaymentsPage />} />
+      <Route path="/reminders" element={<RemindersPage />} />
+      <Route path="/ai-insights" element={<AIInsightsPage />} />
+       <Route path="/ai-copilot" element={<AIFinanceCopilotPage />} />
+      <Route path="/negotiation-assistant" element={<NegotiationAssistantPage />} />
+      <Route path="/cash-flow" element={<CashFlowPage />} />
+      <Route path="/business-health" element={<BusinessHealthPage />} />
+      <Route path="/fraud-detection" element={<FraudDetectionPage />} />
+      <Route path="/payment-anomaly" element={<PaymentAnomalyPage />} />
+      <Route path="/notifications" element={<NotificationsPage />} />
+       <Route path="/settings" element={<SettingsPage />} />
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+    </Routes>
   );
 }
-
 export default App;

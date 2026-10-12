@@ -68,13 +68,13 @@ export const InvoiceForm = ({ initial, onSubmit, onCancel }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 border rounded space-y-4">
-      {error && <p className="text-red-600 text-sm">{error}</p>}
+    <form onSubmit={handleSubmit} className="grid gap-5 rounded-2xl bg-white sm:p-2 xl:grid-cols-[minmax(0,1.6fr)_minmax(250px,0.8fr)]">
+      {error && <p className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-700">{error}</p>}
 
       <div>
-        <label className="block text-sm font-medium mb-1">Client</label>
+        <label className="mb-2 block text-sm font-semibold text-slate-600">Client</label>
         <select
-          className="border p-2 w-full"
+          className="mt-1 h-12 w-full rounded-xl bg-slate-50 px-4 text-sm text-slate-800 outline-none transition focus:ring-2 focus:ring-violet-500/25"
           value={clientId}
           onChange={(e) => setClientId(e.target.value)} // Corrected setter name: 'setclientId' to 'setClientId'
           required
@@ -89,7 +89,7 @@ export const InvoiceForm = ({ initial, onSubmit, onCancel }: Props) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Line Items</label>
+        <label className="mb-2 block text-sm font-semibold text-slate-600">Line Items</label>
         {items.map((item, i) => (
           <InvoiceItemRow
             key={i}
@@ -99,29 +99,29 @@ export const InvoiceForm = ({ initial, onSubmit, onCancel }: Props) => {
             canRemove={items.length > 1}
           />
         ))}
-        <button type="button" onClick={addItem} className="text-blue-600 text-sm">
+        <button type="button" onClick={addItem} className="mt-3 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-violet-700 shadow-sm ring-1 ring-slate-200 transition hover:bg-violet-50">
           + Add Item
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:col-span-1">
         <div>
-          <label className="block text-sm font-medium mb-1">Due Date</label>
+          <label className="mb-2 block text-sm font-semibold text-slate-600">Due Date</label>
           <input
             type="date"
-            className="border p-2 w-full"
+            className="mt-1 h-12 w-full rounded-xl bg-slate-50 px-4 text-sm text-slate-800 outline-none transition focus:ring-2 focus:ring-violet-500/25"
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
             required
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Tax ($)</label>
+          <label className="mb-2 block text-sm font-semibold text-slate-600">Tax ($)</label>
           <input
             type="number"
             min={0}
             step="any"
-            className="border p-2 w-full"
+            className="mt-1 h-12 w-full rounded-xl bg-slate-50 px-4 text-sm text-slate-800 outline-none transition focus:ring-2 focus:ring-violet-500/25"
             value={tax}
             onChange={(e) => setTax(parseFloat(e.target.value) || 0)}
           />
@@ -129,26 +129,26 @@ export const InvoiceForm = ({ initial, onSubmit, onCancel }: Props) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">Notes</label>
+        <label className="mb-2 block text-sm font-semibold text-slate-600">Notes</label>
         <textarea
-          className="border p-2 w-full"
+          className="mt-1 h-12 w-full rounded-xl bg-slate-50 px-4 text-sm text-slate-800 outline-none transition focus:ring-2 focus:ring-violet-500/25"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           rows={2}
         />
       </div>
 
-      <div className="text-right space-y-1 border-t pt-3">
+      <div className="mt-5 rounded-2xl bg-slate-50 p-5 xl:mt-0">
         <p>Subtotal: ${subtotal.toFixed(2)}</p>
         <p>Tax: ${tax.toFixed(2)}</p>
-        <p className="font-bold text-lg">Total: ${total.toFixed(2)}</p>
+        <p className="text-xl font-bold text-emerald-600">Total: ${total.toFixed(2)}</p>
       </div>
 
-      <div className="space-x-2">
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+      <div className="mt-5 flex flex-wrap gap-3">
+        <button type="submit" className="rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-500/20 transition hover:brightness-105">
           {initial ? "Update Invoice" : "Create Invoice"}
         </button>
-        <button type="button" onClick={onCancel} className="px-4 py-2 rounded border">
+        <button type="button" onClick={onCancel} className="rounded-xl bg-white px-5 py-3 text-sm font-semibold text-slate-600 shadow-sm ring-1 ring-slate-200 transition hover:bg-slate-50">
           Cancel
         </button>
       </div>

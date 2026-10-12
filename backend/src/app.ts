@@ -12,6 +12,7 @@ import invoiceRoutes from "./modules/invoices/invoice.routes";
 import aiRoutes from "./modules/ai/ai.routes";
 import  paymentRoutes from "./modules/payments/payment.routes";
 import dashboardRoutes from "./modules/dashboard/dashboard.routes";
+import reminderRoutes from "./modules/reminders/reminder.routes";
 // import { sendUserNotification } from "./services/notification.service";
 import notificationRoutes from "./routes/notifications";
 const app = express();
@@ -40,5 +41,6 @@ app.use("/api/dashboard", dashboardRoutes);
 
 
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/reminders", reminderRoutes);
 app.use(errorHandler);
 export default app;

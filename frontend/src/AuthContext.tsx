@@ -1,43 +1,133 @@
-// c:/Users/kapil/Downloads/cashguard-ai/cashguard-ai/frontend/src/context/AuthContext.tsx
-import { createContext, useContext, useState } from 'react';
-import type { ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState } from "react";
+import type { ReactNode } from "react";
 
 interface User {
   id: string;
   name: string;
   email: string;
-  role: 'ADMIN' | 'USER' | 'OWNER';
+  role: "OWNER" | "ADMIN" | "STAFF" | "USER";
+}
+
+interface LoginResponse {
+  accessToken: string;
+  refreshToken: string;
+  user: User;
 }
 
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const API_URL = "http://localhost:5000/api";
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null); // Start with no user
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const restoreSession = async () => {
+      const token = localStorage.getItem("accessToken");
+
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/auth/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          setUser(null);
+          return;
+        }
+
+        const result = await response.json();
+
+        setUser(result.user);
+      } catch (error) {
+        console.error("Failed to restore session:", error);
+
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    restoreSession();
+  }, []);
 
   const login = async (email: string, password: string) => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 500));
-    if (email === 'test@example.com' && password === 'password') {
-      setUser({ id: 'user1', name: 'Test User', email: 'test@example.com', role: 'USER' });
-    } else if (email === 'admin@example.com' && password === 'password') {
-      setUser({ id: 'admin1', name: 'Admin User', email: 'admin@example.com', role: 'ADMIN' });
-    } else {
-      throw new Error('Invalid credentials');
+    const response = await fetch(`${API_URL}/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result?.error || "Invalid email or password");
+    }
+
+    const data: LoginResponse = result;
+
+    localStorage.setItem("accessToken", data.accessToken);
+    localStorage.setItem("refreshToken", data.refreshToken);
+
+    setUser(data.user);
+  };
+
+  const logout = async () => {
+    const refreshToken = localStorage.getItem("refreshToken");
+
+    try {
+      if (refreshToken) {
+        await fetch(`${API_URL}/auth/logout`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            refreshToken,
+          }),
+        });
+      }
+    } catch (error) {
+      console.error("Logout request failed:", error);
+    } finally {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      setUser(null);
     }
   };
 
-  const logout = () => {
-    setUser(null);
-  };
-
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        logout,
+        loading,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -45,8 +135,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
   }
+
   return context;
 };
