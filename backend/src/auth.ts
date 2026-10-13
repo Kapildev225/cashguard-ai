@@ -29,7 +29,7 @@ export function verifyPassword(password: string, stored: string): boolean {
 
 export interface JwtPayload {
   userId: string;
-  role: "OWNER" | "ADMIN" | "STAFF";
+  role: "OWNER" | "ADMIN" | "STAFF"|"USER";
 }
 
 // Access / Refresh token helpers

@@ -1,5 +1,6 @@
 import express from "express";
 import { prisma } from "../prisma";
+
 import {
   hashPassword,
   verifyPassword,
@@ -9,7 +10,10 @@ import {
   verifyRefreshToken,
   isRefreshTokenValid,
   revokeRefreshToken,
+  type JwtPayload,
 } from "../auth";
+
+
 import { AuthenticatedRequest, requireAuth } from "../middleware/auth";
 
 export const authRouter = express.Router();
@@ -32,7 +36,10 @@ authRouter.post("/signup", async (req, res, next) => {
         role: "OWNER",
       },
     });
-    const payload = { userId: user.id, role: user.role };
+    const payload: JwtPayload = {
+     userId: user.id,
+     role: user.role,
+   };
     const accessToken = signAccessToken(payload);
     const refreshToken = signRefreshToken(payload);
     storeRefreshToken(refreshToken);
@@ -56,7 +63,10 @@ authRouter.post("/login", async (req, res, next) => {
     if (!user) return res.status(401).json({ error: "invalid credentials" });
     if (!verifyPassword(String(password), user.passwordHash)) return res.status(401).json({ error: "invalid credentials" });
 
-    const payload = { userId: user.id, role: user.role };
+    const payload: JwtPayload = {
+  userId: user.id,
+  role: user.role,
+};
     const accessToken = signAccessToken(payload);
     const refreshToken = signRefreshToken(payload);
     storeRefreshToken(refreshToken);

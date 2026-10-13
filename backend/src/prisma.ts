@@ -21,8 +21,7 @@ dotenv.config({
   path: path.resolve(__dirname, "../.env"),
   override: true,
 });
-
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "./generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import pg from "pg";
 
