@@ -16,6 +16,9 @@ import { useAuth } from "../context/AuthContext";
 import Sidebar from "../Layout/Sidebar";
 import TopNavigation from "../Layout/TopNavigation";
 
+const API_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+
 type HealthReport = {
   healthStatus: "HEALTHY" | "WATCH" | "AT_RISK";
 
@@ -87,14 +90,11 @@ export function DashboardPage() {
           throw new Error("Authentication token not found. Please log in again.");
         }
 
-        const response = await fetch(
-          "http://localhost:5000/api/dashboard/health",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await fetch(`${API_URL}/dashboard/health`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!response.ok) {
           const errorText = await response.text();
